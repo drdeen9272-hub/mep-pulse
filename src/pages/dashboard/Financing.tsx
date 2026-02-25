@@ -27,7 +27,7 @@ export default function Financing() {
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="font-heading text-2xl font-bold">Financing Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Funding sources, expenditure allocation, gap analysis, and cost-effectiveness.</p>
+            <p className="text-sm text-muted-foreground">WMR 2025: Total funding covers only 42% of the $8.3B needed. Aid cuts in 2025 compound chronic underinvestment.</p>
           </div>
           <ExportButton />
         </div>
@@ -103,7 +103,7 @@ export default function Financing() {
               </table>
             </div>
             <p className="mt-2 text-[10px] text-muted-foreground">
-              Sproxil surveillance shows the lowest cost per case averted at $2.80, leveraging existing authentication infrastructure.
+              WMR 2025: SMC now reaches 54M children across 20 countries. Sproxil surveillance shows lowest cost per case averted at $2.80, leveraging existing authentication infrastructure.
             </p>
           </div>
 

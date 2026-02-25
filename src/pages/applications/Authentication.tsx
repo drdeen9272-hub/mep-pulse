@@ -48,7 +48,7 @@ export default function Authentication() {
     <div className="container py-8 space-y-8">
       <div>
         <h1 className="font-heading text-3xl font-bold">Product Authentication</h1>
-        <p className="mt-1 text-muted-foreground">Scratch-and-verify SMS/WhatsApp pharmaceutical authentication protecting consumers from counterfeits.</p>
+        <p className="mt-1 text-muted-foreground">Scratch-and-verify pharmaceutical authentication — WMR 2025 highlights artemisinin partial resistance in Africa; verified genuine ACTs are critical to treatment efficacy.</p>
       </div>
 
       {/* Stats */}

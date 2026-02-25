@@ -53,7 +53,7 @@ export default function AISHAChat() {
     <div className="container py-8 space-y-8">
       <div>
         <h1 className="font-heading text-3xl font-bold">AISHA Chat</h1>
-        <p className="mt-1 text-muted-foreground">LLM-powered health assistant supporting English, Hausa, Yoruba, Igbo, and Pidgin — delivering personalized health guidance via WhatsApp.</p>
+        <p className="mt-1 text-muted-foreground">LLM-powered health assistant — WMR 2025 data shows 282M global cases and 610K deaths. AISHA delivers treatment guidance in 5 Nigerian languages via WhatsApp.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

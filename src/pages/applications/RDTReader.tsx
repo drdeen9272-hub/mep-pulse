@@ -44,7 +44,7 @@ export default function RDTReader() {
     <div className="container py-8 space-y-8">
       <div>
         <h1 className="font-heading text-3xl font-bold">AI RDT Reader</h1>
-        <p className="mt-1 text-muted-foreground">AI-powered malaria rapid diagnostic test interpretation via WhatsApp — bringing expert-level diagnostics to community health workers.</p>
+        <p className="mt-1 text-muted-foreground">AI-powered malaria RDT interpretation via WhatsApp — WMR 2025 reports pfhrp2/3 gene deletions in 42 countries, making accurate RDT reading more critical than ever.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
