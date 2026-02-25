@@ -16,6 +16,7 @@ const navItems = [
       { label: "Chemoprevention", to: "/dashboard/chemoprevention" },
       { label: "Financing", to: "/dashboard/financing" },
       { label: "Data Quality", to: "/dashboard/data-quality" },
+      { label: "WMR 2025 Summary", to: "/dashboard/wmr-2025" },
     ],
   },
   {

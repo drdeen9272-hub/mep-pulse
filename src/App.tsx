@@ -17,6 +17,7 @@ import Commodities from "./pages/dashboard/Commodities";
 import Chemoprevention from "./pages/dashboard/Chemoprevention";
 import Financing from "./pages/dashboard/Financing";
 import DataQuality from "./pages/dashboard/DataQuality";
+import WMR2025 from "./pages/dashboard/WMR2025";
 
 // Surveillance
 import CaseBased from "./pages/surveillance/CaseBased";
@@ -60,6 +61,7 @@ const App = () => (
             <Route path="/dashboard/chemoprevention" element={<Chemoprevention />} />
             <Route path="/dashboard/financing" element={<Financing />} />
             <Route path="/dashboard/data-quality" element={<DataQuality />} />
+            <Route path="/dashboard/wmr-2025" element={<WMR2025 />} />
 
             {/* Surveillance */}
             <Route path="/surveillance/case-based" element={<CaseBased />} />
