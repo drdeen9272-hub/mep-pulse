@@ -5,6 +5,8 @@ import { IncidenceChart, AgeDonutChart, Top10StatesChart, DiagnosticMethodChart 
 import NigeriaMap from "@/components/dashboard/NigeriaMap";
 import ActivityFeed from "@/components/dashboard/ActivityFeed";
 import ExportButton from "@/components/ExportButton";
+import mrdtImg from "@/assets/mrdt-sample.png";
+import productImg from "@/assets/product-sample.png";
 
 export default function DashboardOverview() {
   return (
@@ -68,6 +70,38 @@ export default function DashboardOverview() {
         <AgeDonutChart />
         <Top10StatesChart />
         <DiagnosticMethodChart />
+      </div>
+
+      {/* Sample Artifacts */}
+      <div className="mb-6 grid gap-6 md:grid-cols-2">
+        <div className="rounded-xl border bg-card p-5 shadow-sm">
+          <h3 className="mb-3 font-heading text-sm font-semibold">Sample mRDT (Rapid Diagnostic Test)</h3>
+          <p className="mb-3 text-xs text-muted-foreground">AI-powered RDT reader captures and interprets test results via smartphone camera.</p>
+          <div className="flex justify-center">
+            <motion.img
+              src={mrdtImg}
+              alt="Malaria rapid diagnostic test kit with QR code"
+              className="h-52 rounded-lg object-contain shadow-md"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            />
+          </div>
+        </div>
+        <div className="rounded-xl border bg-card p-5 shadow-sm">
+          <h3 className="mb-3 font-heading text-sm font-semibold">Authenticated Product Sample</h3>
+          <p className="mb-3 text-xs text-muted-foreground">Sproxil product authentication verifies antimalarial drugs via scratch-code or RFID.</p>
+          <div className="flex justify-center">
+            <motion.img
+              src={productImg}
+              alt="Authenticated antimalarial product tablet blister pack"
+              className="h-52 rounded-lg object-contain shadow-md"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Activity Feed */}
