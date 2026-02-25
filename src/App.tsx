@@ -21,6 +21,7 @@ import WMR2025 from "./pages/dashboard/WMR2025";
 import MIS2021 from "./pages/dashboard/MIS2021";
 import Assumptions from "./pages/dashboard/Assumptions";
 import DataComparison from "./pages/dashboard/DataComparison";
+import ResultsTracker from "./pages/dashboard/ResultsTracker";
 
 // Surveillance
 import CaseBased from "./pages/surveillance/CaseBased";
@@ -68,6 +69,7 @@ const App = () => (
             <Route path="/dashboard/mis-2021" element={<MIS2021 />} />
             <Route path="/dashboard/assumptions" element={<Assumptions />} />
             <Route path="/dashboard/data-comparison" element={<DataComparison />} />
+            <Route path="/dashboard/results-tracker" element={<ResultsTracker />} />
 
             {/* Surveillance */}
             <Route path="/surveillance/case-based" element={<CaseBased />} />
