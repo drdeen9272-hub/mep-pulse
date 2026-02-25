@@ -4,6 +4,7 @@ import AnimatedCounter from "@/components/home/AnimatedCounter";
 import HeroAnimation from "@/components/home/HeroAnimation";
 import HowItWorks from "@/components/home/HowItWorks";
 import PartnerLogos from "@/components/home/PartnerLogos";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const metrics = [
   { end: 4_500_000_000, suffix: "+", label: "Products Authenticated" },
@@ -61,19 +62,23 @@ export default function HomePage() {
           </div>
 
           {/* KPI counters */}
-          <div className="mt-16 grid grid-cols-2 gap-6 md:grid-cols-4">
+          <ScrollReveal className="mt-16 grid grid-cols-2 gap-6 md:grid-cols-4">
             {metrics.map((m) => (
               <AnimatedCounter key={m.label} {...m} />
             ))}
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* How it works */}
-      <HowItWorks />
+      <ScrollReveal>
+        <HowItWorks />
+      </ScrollReveal>
 
       {/* Partner logos */}
-      <PartnerLogos />
+      <ScrollReveal delay={0.1}>
+        <PartnerLogos />
+      </ScrollReveal>
     </div>
   );
 }
