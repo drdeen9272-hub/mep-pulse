@@ -76,21 +76,28 @@ export default function NigeriaMap() {
   );
 }
 
-// Adjusted positions to align with the real map image (viewBox 0 0 450 420)
+// Positions calibrated to the uploaded Nigeria map image (viewBox 0 0 450 420)
 const statePositions: Record<string, { x: number; y: number }> = {
-  SO: { x: 115, y: 42 }, KB: { x: 70, y: 75 }, ZA: { x: 140, y: 75 },
-  KT: { x: 195, y: 55 }, KN: { x: 240, y: 75 }, JG: { x: 285, y: 55 },
-  YO: { x: 340, y: 55 }, BO: { x: 395, y: 65 },
-  KD: { x: 200, y: 125 }, BA: { x: 300, y: 115 }, GO: { x: 340, y: 120 },
-  AD: { x: 390, y: 135 }, TA: { x: 350, y: 165 },
-  NI: { x: 148, y: 155 }, FC: { x: 210, y: 175 }, NA: { x: 255, y: 175 },
-  PL: { x: 290, y: 160 }, BE: { x: 270, y: 200 },
-  KW: { x: 125, y: 205 }, KG: { x: 190, y: 230 },
-  OY: { x: 85, y: 240 }, OS: { x: 108, y: 265 }, EK: { x: 130, y: 275 },
-  OG: { x: 65, y: 270 }, LA: { x: 48, y: 295 }, ON: { x: 135, y: 300 },
-  ED: { x: 175, y: 285 }, DE: { x: 165, y: 320 },
-  AN: { x: 210, y: 295 }, EN: { x: 245, y: 275 }, EB: { x: 270, y: 265 },
-  IM: { x: 218, y: 320 }, AB: { x: 240, y: 330 },
-  CR: { x: 305, y: 295 }, AK: { x: 278, y: 335 },
-  RI: { x: 200, y: 355 }, BY: { x: 175, y: 370 },
+  // North-West
+  SO: { x: 112, y: 38 }, KB: { x: 62, y: 82 }, ZA: { x: 142, y: 68 },
+  KT: { x: 200, y: 48 }, KN: { x: 232, y: 82 }, JG: { x: 290, y: 48 },
+  KD: { x: 195, y: 128 },
+  // North-East
+  YO: { x: 345, y: 48 }, BO: { x: 400, y: 62 },
+  BA: { x: 298, y: 108 }, GO: { x: 340, y: 110 },
+  AD: { x: 395, y: 130 }, TA: { x: 355, y: 168 },
+  // North-Central
+  NI: { x: 138, y: 142 }, FC: { x: 208, y: 172 }, NA: { x: 252, y: 172 },
+  PL: { x: 288, y: 155 }, BE: { x: 282, y: 205 },
+  KW: { x: 118, y: 200 }, KG: { x: 185, y: 228 },
+  // South-West
+  OY: { x: 82, y: 235 }, OS: { x: 102, y: 262 }, EK: { x: 128, y: 268 },
+  OG: { x: 60, y: 272 }, LA: { x: 40, y: 290 }, ON: { x: 130, y: 298 },
+  // South-South
+  ED: { x: 168, y: 280 }, DE: { x: 158, y: 318 },
+  CR: { x: 300, y: 290 }, AK: { x: 272, y: 330 },
+  RI: { x: 202, y: 348 }, BY: { x: 170, y: 360 },
+  // South-East
+  AN: { x: 205, y: 290 }, EN: { x: 238, y: 270 }, EB: { x: 268, y: 262 },
+  IM: { x: 215, y: 318 }, AB: { x: 238, y: 325 },
 };
