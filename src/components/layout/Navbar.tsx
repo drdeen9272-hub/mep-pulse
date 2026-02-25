@@ -18,6 +18,7 @@ const navItems = [
       { label: "Data Quality", to: "/dashboard/data-quality" },
       { label: "WMR 2025 Summary", to: "/dashboard/wmr-2025" },
       { label: "MIS 2021 Scorecard", to: "/dashboard/mis-2021" },
+      { label: "Assumptions & Methodology", to: "/dashboard/assumptions" },
     ],
   },
   {

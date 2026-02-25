@@ -5,6 +5,8 @@ import { IncidenceChart, AgeDonutChart, Top10StatesChart, DiagnosticMethodChart 
 import NigeriaMap from "@/components/dashboard/NigeriaMap";
 import ActivityFeed from "@/components/dashboard/ActivityFeed";
 import ExportButton from "@/components/ExportButton";
+import EliminationScore from "@/components/dashboard/EliminationScore";
+import SectorFramework from "@/components/dashboard/SectorFramework";
 import mrdtImg from "@/assets/mrdt-sample.png";
 import productImg from "@/assets/product-sample.png";
 import { wmr2025KPIs, nigeriaWMR2025 } from "@/data/wmr2025Data";
@@ -20,12 +22,22 @@ export default function DashboardOverview() {
       {/* Header */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-heading text-2xl font-bold">Overview Dashboard</h1>
+          <h1 className="font-heading text-2xl font-bold">National Malaria Elimination Command Centre</h1>
           <p className="text-sm text-muted-foreground">
-            Command-center view — sourced from WHO World Malaria Report 2025. Nigeria accounts for {nigeriaWMR2025.shareOfGlobalCases}% of global cases.
+            Sector-wide intelligence — sourced from WMR 2025, MIS 2021, DHIS2 & Sproxil NMDR. Nigeria accounts for {nigeriaWMR2025.shareOfGlobalCases}% of global cases and {nigeriaWMR2025.shareOfGlobalDeaths}% of global deaths.
           </p>
         </div>
         <ExportButton />
+      </div>
+
+      {/* Elimination Tracking Score — the single most important metric */}
+      <div className="mb-6">
+        <EliminationScore />
+      </div>
+
+      {/* Sector-Wide Framework */}
+      <div className="mb-6">
+        <SectorFramework />
       </div>
 
       {/* KPI Row */}
