@@ -53,7 +53,7 @@ export default function Surveys() {
     <div className="container py-8 space-y-8">
       <div>
         <h1 className="font-heading text-3xl font-bold">Health Surveys</h1>
-        <p className="mt-1 text-muted-foreground">Mobile health surveys triggered after product authentication — building Nigeria's largest real-time Digital MIS.</p>
+        <p className="mt-1 text-muted-foreground">Mobile health surveys triggered after product authentication — WMR 2025 underscores that stronger surveillance is essential as only 42% of funding needs are met.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

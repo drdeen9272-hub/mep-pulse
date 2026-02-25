@@ -49,7 +49,7 @@ export default function Entomology() {
           <div>
             <h1 className="font-heading text-2xl font-bold">Entomology & Vector Control</h1>
             <p className="text-sm text-muted-foreground">
-              ITN (Insecticide-Treated Net) coverage, IRS (Indoor Residual Spraying), insecticide resistance, and vector species distribution.
+              WMR 2025: Pyrethroid resistance is reducing ITN effectiveness. Dual-ingredient nets and IRS expansion are critical. SMC now reaches 54M children in 20 countries.
             </p>
           </div>
           <ExportButton />

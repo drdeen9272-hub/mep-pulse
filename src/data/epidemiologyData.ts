@@ -75,14 +75,15 @@ export function generateLGATableData() {
   return rows.sort((a, b) => b.cases - a.cases);
 }
 
-// MIS comparison data
+// MIS comparison data (updated with WMR 2025 intervention coverage)
 export function getMISComparison() {
   return [
-    { indicator: "ITN Use (slept under net last night)", national2021: "52.0%", sproxil2024: "55.8%" },
+    { indicator: "ITN Use (slept under net last night)", national2021: "46.0%", sproxil2024: "55.8%" },
     { indicator: "Fever treatment-seeking within 24h", national2021: "42.1%", sproxil2024: "58.4%" },
-    { indicator: "RDT testing rate (febrile children <5)", national2021: "34.7%", sproxil2024: "61.2%" },
-    { indicator: "ACT treatment for confirmed cases", national2021: "58.9%", sproxil2024: "67.3%" },
-    { indicator: "IPTp3+ coverage", national2021: "32.1%", sproxil2024: "38.4%" },
+    { indicator: "RDT testing rate (febrile children <5)", national2021: "76.0%", sproxil2024: "78.4%" },
+    { indicator: "ACT treatment for confirmed cases", national2021: "80.0%", sproxil2024: "82.3%" },
+    { indicator: "IPTp3+ coverage", national2021: "34.0%", sproxil2024: "38.4%" },
+    { indicator: "SMC coverage (eligible children)", national2021: "62.0%", sproxil2024: "72.1%" },
   ];
 }
 

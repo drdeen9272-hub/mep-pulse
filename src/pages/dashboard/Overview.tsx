@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Activity, Microscope, ShieldCheck, Users } from "lucide-react";
+import { Activity, Microscope, ShieldCheck, Users, Globe, Syringe } from "lucide-react";
 import KPICard from "@/components/dashboard/KPICard";
 import { IncidenceChart, AgeDonutChart, Top10StatesChart, DiagnosticMethodChart } from "@/components/dashboard/OverviewCharts";
 import NigeriaMap from "@/components/dashboard/NigeriaMap";
@@ -7,6 +7,7 @@ import ActivityFeed from "@/components/dashboard/ActivityFeed";
 import ExportButton from "@/components/ExportButton";
 import mrdtImg from "@/assets/mrdt-sample.png";
 import productImg from "@/assets/product-sample.png";
+import { wmr2025KPIs, nigeriaWMR2025 } from "@/data/wmr2025Data";
 
 export default function DashboardOverview() {
   return (
@@ -21,7 +22,7 @@ export default function DashboardOverview() {
         <div>
           <h1 className="font-heading text-2xl font-bold">Overview Dashboard</h1>
           <p className="text-sm text-muted-foreground">
-            Command-center view of Nigeria's malaria surveillance data.
+            Command-center view — sourced from WHO World Malaria Report 2025. Nigeria accounts for {nigeriaWMR2025.shareOfGlobalCases}% of global cases.
           </p>
         </div>
         <ExportButton />
@@ -30,32 +31,63 @@ export default function DashboardOverview() {
       {/* KPI Row */}
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <KPICard
-          title="Total Confirmed Cases"
-          value="12,847,293"
-          trend={{ value: "+3.2% vs last year", positive: false }}
-          icon={<Activity className="h-5 w-5 text-destructive" />}
+          title="Global Estimated Cases"
+          value={wmr2025KPIs.globalCases}
+          trend={{ value: "+3% vs 2023 (WMR 2025)", positive: false }}
+          icon={<Globe className="h-5 w-5 text-destructive" />}
           delay={0}
         />
         <KPICard
-          title="Test Positivity Rate"
-          value="42.7%"
-          trend={{ value: "Down from 48.1%", positive: true }}
-          icon={<Microscope className="h-5 w-5 text-secondary" />}
+          title="Nigeria Cases (24.3%)"
+          value="68.5M"
+          trend={{ value: `${nigeriaWMR2025.shareOfGlobalDeaths}% of global deaths`, positive: false }}
+          icon={<Activity className="h-5 w-5 text-destructive" />}
           delay={0.1}
         />
         <KPICard
-          title="Products Authenticated"
-          value="287.4M"
-          subtitle="This quarter"
-          icon={<ShieldCheck className="h-5 w-5 text-accent" />}
+          title="Global Deaths"
+          value={wmr2025KPIs.globalDeaths}
+          trend={{ value: "Mortality rate: 13.8/100K", positive: false }}
+          icon={<Microscope className="h-5 w-5 text-secondary" />}
           delay={0.2}
+        />
+        <KPICard
+          title="Funding Coverage"
+          value={wmr2025KPIs.fundingCoverageOfNeed}
+          subtitle={`of $8.3B needed (GTS)`}
+          icon={<ShieldCheck className="h-5 w-5 text-accent" />}
+          delay={0.3}
+        />
+      </div>
+
+      {/* Secondary KPIs */}
+      <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <KPICard
+          title="Cases Prevented (Since 2000)"
+          value={wmr2025KPIs.casesPreventedSince2000}
+          icon={<ShieldCheck className="h-5 w-5 text-secondary" />}
+          delay={0.4}
+        />
+        <KPICard
+          title="SMC Children Reached"
+          value={wmr2025KPIs.smcChildrenReached}
+          subtitle={`Across ${wmr2025KPIs.smcCountries} countries`}
+          icon={<Syringe className="h-5 w-5 text-primary" />}
+          delay={0.5}
+        />
+        <KPICard
+          title="Vaccine Countries"
+          value={String(wmr2025KPIs.countriesWithVaccine)}
+          subtitle="Routine immunization"
+          icon={<Syringe className="h-5 w-5 text-accent" />}
+          delay={0.6}
         />
         <KPICard
           title="Active PPMV Network"
           value="8,247"
           subtitle="Across 18 states"
           icon={<Users className="h-5 w-5 text-primary" />}
-          delay={0.3}
+          delay={0.7}
         />
       </div>
 

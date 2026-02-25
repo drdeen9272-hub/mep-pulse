@@ -47,7 +47,7 @@ export default function Transfers() {
     <div className="container py-8 space-y-8">
       <div>
         <h1 className="font-heading text-3xl font-bold">Conditional Transfers</h1>
-        <p className="mt-1 text-muted-foreground">Incentive system driving Test-Treat-Track accountability — rewarding consumers for completing the full malaria care pathway.</p>
+        <p className="mt-1 text-muted-foreground">Incentive system driving Test-Treat-Track accountability — WMR 2025 reports 282M cases globally; financial incentives improve treatment-seeking and ACT adherence.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
