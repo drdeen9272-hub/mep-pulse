@@ -5,7 +5,8 @@ import {
 } from "recharts";
 import KPICard from "@/components/dashboard/KPICard";
 import ExportButton from "@/components/ExportButton";
-import { Globe, Skull, TrendingDown, Target, Syringe, ShieldAlert, DollarSign, AlertTriangle } from "lucide-react";
+import { Globe, Skull, TrendingDown, Target, Syringe, ShieldAlert, DollarSign, AlertTriangle, FileDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   globalCasesDeathsTrend, wmr2025KPIs, gtsProgress,
   topCountriesByCases, topCountriesByDeaths, africaCasesDeathsTrend,
@@ -45,7 +46,15 @@ export default function WMR2025Summary() {
             Key findings from the WHO WMR 2025 — Addressing the threat of antimalarial drug resistance.
           </p>
         </div>
-        <ExportButton />
+        <div className="flex gap-2">
+          <Button asChild variant="outline" size="sm">
+            <a href="https://iris.who.int/bitstream/handle/10665/381432/9789240117822-eng.pdf" target="_blank" rel="noopener noreferrer">
+              <FileDown className="mr-2 h-4 w-4" />
+              Download PDF
+            </a>
+          </Button>
+          <ExportButton />
+        </div>
       </div>
 
       {/* Headline KPIs */}
