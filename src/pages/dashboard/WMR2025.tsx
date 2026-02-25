@@ -5,12 +5,12 @@ import {
 } from "recharts";
 import KPICard from "@/components/dashboard/KPICard";
 import ExportButton from "@/components/ExportButton";
-import { Globe, Skull, TrendingDown, Target, Syringe, ShieldAlert, DollarSign, AlertTriangle, FileDown } from "lucide-react";
+import { Globe, Skull, TrendingDown, Target, Syringe, ShieldAlert, DollarSign, AlertTriangle, FileDown, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   globalCasesDeathsTrend, wmr2025KPIs, gtsProgress,
   topCountriesByCases, topCountriesByDeaths, africaCasesDeathsTrend,
-  fundingWMR2025, drugResistance, interventionsCoverage,
+  fundingWMR2025, drugResistance, interventionsCoverage, nigeriaWMR2025,
 } from "@/data/wmr2025Data";
 
 const casesChartData = globalCasesDeathsTrend.map((d) => ({
@@ -71,6 +71,47 @@ export default function WMR2025Summary() {
         <KPICard title="Vaccine Rollout" value={`${wmr2025KPIs.countriesWithVaccine} countries`} subtitle="Routine immunization" icon={<Syringe className="h-5 w-5 text-secondary" />} delay={0.6} />
         <KPICard title="pfhrp2 Deletions" value={`${drugResistance.pfhrp2DeletionCountries} countries`} subtitle="Threatening RDT accuracy" icon={<AlertTriangle className="h-5 w-5 text-destructive" />} delay={0.7} />
       </div>
+
+      {/* Nigeria Spotlight */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mb-6 rounded-xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 p-6 shadow-sm"
+      >
+        <div className="mb-4 flex items-center gap-2">
+          <MapPin className="h-5 w-5 text-primary" />
+          <h3 className="font-heading text-lg font-bold text-foreground">Nigeria Spotlight</h3>
+          <span className="ml-auto rounded-full bg-destructive/10 px-3 py-0.5 text-xs font-semibold text-destructive">
+            Highest burden country
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="rounded-lg bg-card p-4 text-center shadow-sm">
+            <p className="text-2xl font-bold text-primary">{nigeriaWMR2025.shareOfGlobalCases}%</p>
+            <p className="mt-1 text-xs text-muted-foreground">of global cases</p>
+            <p className="text-sm font-medium text-foreground">{(nigeriaWMR2025.estimatedCases / 1_000_000).toFixed(1)}M cases</p>
+          </div>
+          <div className="rounded-lg bg-card p-4 text-center shadow-sm">
+            <p className="text-2xl font-bold text-destructive">{nigeriaWMR2025.shareOfGlobalDeaths}%</p>
+            <p className="mt-1 text-xs text-muted-foreground">of global deaths</p>
+            <p className="text-sm font-medium text-foreground">{(nigeriaWMR2025.estimatedDeaths / 1_000).toFixed(1)}K deaths</p>
+          </div>
+          <div className="rounded-lg bg-card p-4 text-center shadow-sm">
+            <p className="text-2xl font-bold text-secondary">{nigeriaWMR2025.shareOfAfricaCases}%</p>
+            <p className="mt-1 text-xs text-muted-foreground">of Africa region cases</p>
+            <p className="text-sm font-medium text-foreground">1 in 4 African cases</p>
+          </div>
+          <div className="rounded-lg bg-card p-4 text-center shadow-sm">
+            <p className="text-2xl font-bold text-accent">{nigeriaWMR2025.shareOfAfricaDeaths}%</p>
+            <p className="mt-1 text-xs text-muted-foreground">of Africa region deaths</p>
+            <p className="text-sm font-medium text-foreground">Nearly 1 in 3 deaths</p>
+          </div>
+        </div>
+        <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+          Nigeria remains the single highest-burden country globally, accounting for roughly a quarter of all malaria cases and nearly a third of all malaria deaths worldwide. Targeted interventions including expanded SMC, ITN distribution, and vaccine rollout are critical to reversing this trend.
+        </p>
+      </motion.div>
 
       {/* Global Cases & Deaths 2000–2024 */}
       <div className="mb-6 rounded-xl border bg-card p-5 shadow-sm">
