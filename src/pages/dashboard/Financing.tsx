@@ -32,6 +32,14 @@ export default function Financing() {
           <ExportButton />
         </div>
 
+        {/* KPI Row */}
+        <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <KPICard title="Total Funding (2024)" value="$4.1B" trend={{ value: "42% of need", positive: false }} icon={<DollarSign className="h-5 w-5 text-accent" />} />
+          <KPICard title="Funding Gap" value="$4.2B" trend={{ value: "58% unfunded", positive: false }} icon={<AlertTriangle className="h-5 w-5 text-destructive" />} delay={0.05} />
+          <KPICard title="Domestic Allocation" value="$158M" trend={{ value: "+17% vs 2023", positive: true }} icon={<Landmark className="h-5 w-5 text-secondary" />} delay={0.1} />
+          <KPICard title="GTS Annual Target" value="$8.3B" subtitle="By 2025 — not on track" icon={<TrendingUp className="h-5 w-5 text-primary" />} delay={0.15} />
+        </div>
+
         {/* Row 1: Funding Sources Donut + Expenditure Bars */}
         <div className="mb-6 grid gap-6 lg:grid-cols-2">
           <div className="rounded-xl border bg-card p-5 shadow-sm">
