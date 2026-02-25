@@ -25,18 +25,37 @@ export default function NigeriaMap() {
           {nigeriaStates.map((state) => {
             const pos = statePositions[state.code];
             if (!pos) return null;
-            const burden = getStateBurden(state);
+            const isHovered = hovered === state.code;
             return (
-              <circle
+              <g
                 key={state.code}
-                cx={pos.x}
-                cy={pos.y}
-                r={14}
-                fill="transparent"
-                className="cursor-pointer"
                 onMouseEnter={() => setHovered(state.code)}
                 onMouseLeave={() => setHovered(null)}
-              />
+                className="cursor-pointer"
+              >
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r={14}
+                  fill={isHovered ? "hsl(var(--primary) / 0.25)" : "transparent"}
+                  stroke={isHovered ? "hsl(var(--primary))" : "transparent"}
+                  strokeWidth="1.5"
+                />
+                <text
+                  x={pos.x}
+                  y={pos.y + 1}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  className="pointer-events-none select-none font-semibold"
+                  style={{
+                    fontSize: isHovered ? "8px" : "6px",
+                    fill: isHovered ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.7)",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {state.code}
+                </text>
+              </g>
             );
           })}
         </svg>
