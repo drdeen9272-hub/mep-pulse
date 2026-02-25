@@ -20,6 +20,7 @@ import DataQuality from "./pages/dashboard/DataQuality";
 import WMR2025 from "./pages/dashboard/WMR2025";
 import MIS2021 from "./pages/dashboard/MIS2021";
 import Assumptions from "./pages/dashboard/Assumptions";
+import DataComparison from "./pages/dashboard/DataComparison";
 
 // Surveillance
 import CaseBased from "./pages/surveillance/CaseBased";
@@ -66,6 +67,7 @@ const App = () => (
             <Route path="/dashboard/wmr-2025" element={<WMR2025 />} />
             <Route path="/dashboard/mis-2021" element={<MIS2021 />} />
             <Route path="/dashboard/assumptions" element={<Assumptions />} />
+            <Route path="/dashboard/data-comparison" element={<DataComparison />} />
 
             {/* Surveillance */}
             <Route path="/surveillance/case-based" element={<CaseBased />} />

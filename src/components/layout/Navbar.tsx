@@ -20,6 +20,7 @@ const navItems = [
       { label: "WMR 2025 Summary", to: "/dashboard/wmr-2025" },
       { label: "MIS 2021 Scorecard", to: "/dashboard/mis-2021" },
       { label: "Assumptions & Methodology", to: "/dashboard/assumptions" },
+      { label: "Data Triangulation (MIS×WMR×SMIS)", to: "/dashboard/data-comparison" },
     ],
   },
   {
