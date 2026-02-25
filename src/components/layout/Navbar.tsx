@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import nigeriaFlag from "@/assets/nigeria-flag.png";
 
 const navItems = [
   {
@@ -64,15 +65,24 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-card shadow-sm">
+      {/* Nigeria tricolor bar */}
+      <div className="flex h-1">
+        <div className="flex-1 bg-[hsl(140,50%,35%)]" />
+        <div className="flex-1 bg-white" />
+        <div className="flex-1 bg-[hsl(140,50%,35%)]" />
+      </div>
       <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex flex-col leading-none">
-          <span className="font-heading text-xl font-bold tracking-tight text-primary">
-            SPROXIL
-          </span>
-          <span className="text-[10px] font-medium text-muted-foreground">
-            Powering Health Intelligence
-          </span>
+        {/* Logo + Flag */}
+        <Link to="/" className="flex items-center gap-2.5 leading-none">
+          <img src={nigeriaFlag} alt="Nigeria flag" className="h-8 w-auto rounded-sm shadow-sm" />
+          <div className="flex flex-col">
+            <span className="font-heading text-xl font-bold tracking-tight text-primary">
+              SPROXIL
+            </span>
+            <span className="text-[10px] font-medium text-muted-foreground">
+              Powering Health Intelligence
+            </span>
+          </div>
         </Link>
 
         {/* Desktop nav */}
