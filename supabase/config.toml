@@ -1,1 +1,7 @@
 project_id = "fxefxkuwojcmmpiecnaf"
+
+[functions.dashboard-actions]
+verify_jwt = false
+
+[functions.audio-briefing]
+verify_jwt = false
