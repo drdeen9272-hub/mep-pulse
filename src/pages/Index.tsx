@@ -33,8 +33,8 @@ export default function HomePage() {
                 Platform
               </h1>
               <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground lg:mx-0">
-                Real-time surveillance, AI-powered diagnostics, and pharmaceutical
-                authentication across 774 districts in 36 states. Trusted by
+                AISHA (AI-Supported Healthcare Agent) delivers real-time surveillance, AI-powered diagnostics, and pharmaceutical
+                authentication across 774 Local Government Areas in 36 states. Trusted by
                 Nigeria's National Malaria Elimination Programme.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
@@ -44,7 +44,10 @@ export default function HomePage() {
                 >
                   Explore Dashboard
                 </Link>
-                <button className="inline-flex items-center rounded-lg border-2 border-primary px-6 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground">
+                <button
+                  onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="inline-flex items-center rounded-lg border-2 border-primary px-6 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground"
+                >
                   Watch Demo
                 </button>
               </div>

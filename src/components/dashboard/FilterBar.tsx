@@ -62,7 +62,7 @@ export default function FilterBar({ showSpecies = false, showAge = true, showSex
           <input type="month" value={dateTo} onChange={(e) => setDateTo(e.target.value)}
             className="w-full rounded-md border bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
         </div>
-        <Select label="State" options={states} value={state} onChange={setState} className="min-w-[140px]" />
+        <Select label="State / LGA (Local Government Area)" options={states} value={state} onChange={setState} className="min-w-[140px]" />
         {showAge && <Select label="Age Group" options={ageGroups} value={age} onChange={setAge} className="min-w-[110px]" />}
         {showSex && <Select label="Sex" options={sexOptions} value={sex} onChange={setSex} className="min-w-[80px]" />}
         {showSpecies && <Select label="Parasite Species" options={speciesOptions} value={species} onChange={setSpecies} className="min-w-[140px]" />}

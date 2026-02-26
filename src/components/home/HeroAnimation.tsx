@@ -139,10 +139,12 @@ const frames = [
         </div>
         <div className="w-full rounded-lg border bg-muted/50 p-3 text-center">
           <div className="font-heading text-2xl font-bold text-success">₦850</div>
+          <div className="text-[8px] text-muted-foreground">(~$0.50 USD)</div>
           <div className="text-[10px] text-muted-foreground">Airtime sent to patient</div>
         </div>
         <div className="w-full rounded-lg border bg-muted/50 p-3 text-center">
           <div className="font-heading text-lg font-bold text-secondary">₦150</div>
+          <div className="text-[8px] text-muted-foreground">(~$0.09 USD)</div>
           <div className="text-[10px] text-muted-foreground">Credited to PPMV</div>
         </div>
         <div className="text-[9px] text-muted-foreground">Thank you for helping fight malaria!</div>

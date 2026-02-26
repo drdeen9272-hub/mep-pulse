@@ -3,6 +3,7 @@ import { Download, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface ExportButtonProps {
   onExport?: (format: "csv" | "pdf" | "excel") => void;
@@ -42,7 +43,11 @@ export default function ExportButton({ onExport, className }: ExportButtonProps)
               <button
                 key={f.key}
                 onClick={() => {
-                  onExport?.(f.key);
+                  if (onExport) {
+                    onExport(f.key);
+                  } else {
+                    toast.info("Export available in production deployment. Contact Sproxil for data access.");
+                  }
                   setOpen(false);
                 }}
                 className="block w-full rounded-sm px-3 py-2 text-left text-sm hover:bg-muted"
