@@ -9,7 +9,8 @@ const navItems = [
   {
     label: "Dashboard",
     children: [
-      { label: "Overview", to: "/dashboard" },
+      { label: "🌍 Africa Overview", to: "/dashboard/africa" },
+      { label: "🇳🇬 Nigeria Command Centre", to: "/dashboard" },
       { label: "Epidemiology", to: "/dashboard/epidemiology" },
       { label: "Entomology & Vector Control", to: "/dashboard/entomology" },
       { label: "Diagnostics & Treatment", to: "/dashboard/diagnostics" },
