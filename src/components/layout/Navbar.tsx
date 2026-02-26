@@ -11,6 +11,7 @@ const navItems = [
     children: [
       { label: "🌍 Africa Overview", to: "/dashboard/africa" },
       { label: "🇳🇬 Nigeria Command Centre", to: "/dashboard" },
+      { label: "📊 Country Comparison", to: "/dashboard/compare" },
       { label: "Epidemiology", to: "/dashboard/epidemiology" },
       { label: "Entomology & Vector Control", to: "/dashboard/entomology" },
       { label: "Diagnostics & Treatment", to: "/dashboard/diagnostics" },

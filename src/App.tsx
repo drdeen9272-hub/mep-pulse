@@ -23,6 +23,7 @@ import WMR2025 from "./pages/dashboard/WMR2025";
 import MIS2021 from "./pages/dashboard/MIS2021";
 import Assumptions from "./pages/dashboard/Assumptions";
 import DataComparison from "./pages/dashboard/DataComparison";
+import CountryComparison from "./pages/dashboard/CountryComparison";
 
 
 // Surveillance
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/dashboard" element={<DashboardOverview />} />
             <Route path="/dashboard/africa" element={<AfricaOverview />} />
             <Route path="/dashboard/country/:countryCode" element={<CountryDashboard />} />
+            <Route path="/dashboard/compare" element={<CountryComparison />} />
             <Route path="/dashboard/epidemiology" element={<Epidemiology />} />
             <Route path="/dashboard/entomology" element={<Entomology />} />
             <Route path="/dashboard/diagnostics" element={<Diagnostics />} />
