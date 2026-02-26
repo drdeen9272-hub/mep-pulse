@@ -7,6 +7,8 @@ import ActivityFeed from "@/components/dashboard/ActivityFeed";
 import ExportButton from "@/components/ExportButton";
 import EliminationScore from "@/components/dashboard/EliminationScore";
 import SectorFramework from "@/components/dashboard/SectorFramework";
+import ActionPanel from "@/components/dashboard/ActionPanel";
+import AudioBriefing from "@/components/dashboard/AudioBriefing";
 import mrdtImg from "@/assets/mrdt-sample.png";
 import productImg from "@/assets/product-sample.png";
 import { wmr2025KPIs, nigeriaWMR2025 } from "@/data/wmr2025Data";
@@ -38,6 +40,16 @@ export default function DashboardOverview() {
       {/* Sector-Wide Framework */}
       <div className="mb-6">
         <SectorFramework />
+      </div>
+
+      {/* Audio Briefing */}
+      <div className="mb-6">
+        <AudioBriefing />
+      </div>
+
+      {/* AI Action Recommendations */}
+      <div className="mb-6">
+        <ActionPanel />
       </div>
 
       {/* KPI Row */}
