@@ -69,9 +69,9 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b bg-card shadow-sm">
       {/* Nigeria tricolor bar */}
       <div className="flex h-1">
-        <div className="flex-1 bg-[hsl(140,50%,35%)]" />
+        <div className="flex-1 bg-[hsl(210,52%,23%)]" />
         <div className="flex-1 bg-white" />
-        <div className="flex-1 bg-[hsl(140,50%,35%)]" />
+        <div className="flex-1 bg-[hsl(174,100%,33%)]" />
       </div>
       <div className="container flex h-16 items-center justify-between">
         {/* Logo + Flag */}

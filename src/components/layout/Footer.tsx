@@ -51,7 +51,7 @@ export default function Footer() {
             Sproxil and the National Malaria Elimination Programme.
           </p>
           <p className="mt-2 text-xs opacity-50">
-            © 2025 Sproxil Inc. All rights reserved.
+            © 2026 Sproxil Inc. All rights reserved.
           </p>
         </div>
       </div>
