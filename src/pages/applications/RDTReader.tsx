@@ -13,7 +13,7 @@ const chatFlow = [
 ];
 
 const stats = [
-  { label: "Tests Interpreted", value: "284,500+", icon: Camera, color: "text-secondary" },
+  { label: "Tests Interpreted", value: "22,000+", icon: Camera, color: "text-secondary" },
   { label: "AI Accuracy", value: "96.8%", icon: Brain, color: "text-accent" },
   { label: "Concordance w/ Experts", value: "98.1%", icon: CheckCircle2, color: "text-secondary" },
   { label: "Avg. Response Time", value: "3.2s", icon: BarChart3, color: "text-accent" },
@@ -100,6 +100,9 @@ export default function RDTReader() {
               )}
             </div>
           </PhoneMockup>
+          <p className="text-xs text-muted-foreground text-center max-w-xs">
+            Projected capacity at national scale: 250,000+ monthly interpretations
+          </p>
         </div>
 
         <div className="space-y-6">

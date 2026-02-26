@@ -6,10 +6,10 @@ import { Building2, Users, Globe, Heart, Shield, Microscope, MapPin, Smartphone 
 const partners = [
   { name: "NMEP", full: "National Malaria Elimination Programme", role: "Primary government partner for malaria surveillance and control strategy" },
   { name: "NAFDAC", full: "National Agency for Food & Drug Administration", role: "Regulatory partner for pharmaceutical authentication and counterfeit detection" },
-  { name: "Gates Foundation", full: "Bill & Melinda Gates Foundation", role: "Funding partner for digital health innovation and scale-up across Nigeria" },
-  { name: "Global Fund", full: "The Global Fund to Fight AIDS, TB and Malaria", role: "Major funding source for malaria commodities and surveillance strengthening" },
-  { name: "WHO", full: "World Health Organization", role: "Technical guidance on surveillance standards and malaria elimination strategy" },
-  { name: "PMI", full: "U.S. President's Malaria Initiative", role: "Bilateral funding and technical support for malaria prevention and treatment" },
+  { name: "Gates Foundation", full: "Bill & Melinda Gates Foundation", role: "Strategic funding target for digital health innovation and malaria surveillance scale-up" },
+  { name: "Global Fund", full: "The Global Fund to Fight AIDS, TB and Malaria", role: "Major funder of Nigeria's malaria commodities and health system strengthening" },
+  { name: "WHO", full: "World Health Organization", role: "Sets global surveillance standards and malaria elimination strategy that guide platform design" },
+  { name: "Audere", full: "Audere Inc.", role: "Technology partner providing AI-powered RDT interpretation integrated into the AISHA platform" },
 ];
 
 const healthStructure = [

@@ -126,8 +126,8 @@ export const gtsProgress = {
 // === FUNDING DATA (Chapter 4) ===
 export const fundingWMR2025 = {
   totalFunding2024Pct: 42, // % of what's needed
-  gtsTargetFunding: 8_300_000_000, // USD needed annually by 2025
-  actualFunding2024: 4_100_000_000, // approx based on 42%
+  gtsTargetFunding: 9_300_000_000, // USD needed annually by 2025
+  actualFunding2024: 3_900_000_000, // approx based on 42%
   fundingGapPct: 58,
 };
 

@@ -77,7 +77,9 @@ export default function NigeriaMap() {
       </div>
 
       {/* Legend */}
-      <div className="mt-2 flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
+      <div className="mt-2 text-center">
+        <p className="text-[10px] font-medium text-muted-foreground mb-1">Test Positivity Rate (TPR)</p>
+        <div className="flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
         {[
           { label: "23–30%", color: "hsl(50 90% 75%)" },
           { label: "31–40%", color: "hsl(45 90% 60%)" },
@@ -90,6 +92,7 @@ export default function NigeriaMap() {
             {l.label}
           </div>
         ))}
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 
 const partners = [
-  "NMEP", "NAFDAC", "Bill & Melinda Gates Foundation", "Global Fund",
-  "WHO", "Malaria Consortium", "PSI", "Audere",
-  "GSK", "Merck", "Roche", "Cipla",
+  "NMEP", "NAFDAC", "Audere", "Novartis", "Cipla",
+  "Emzor", "Fidson", "May & Baker", "Swiss Pharma",
+  "Chi Pharmaceuticals", "Tuyil", "Neimeth",
 ];
 
 export default function PartnerLogos() {
@@ -11,7 +11,7 @@ export default function PartnerLogos() {
     <section className="border-y bg-card py-10">
       <div className="container">
         <p className="mb-6 text-center text-sm font-medium uppercase tracking-widest text-muted-foreground">
-          Trusted By
+          Partners &amp; Pharmaceutical Brands
         </p>
         <div className="relative overflow-hidden">
           <motion.div

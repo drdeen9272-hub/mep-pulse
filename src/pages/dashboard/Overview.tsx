@@ -66,7 +66,7 @@ export default function DashboardOverview() {
         <KPICard
           title="Funding Coverage"
           value={wmr2025KPIs.fundingCoverageOfNeed}
-          subtitle={`of $8.3B needed (GTS)`}
+          subtitle={`of $9.3B needed (GTS)`}
           icon={<ShieldCheck className="h-5 w-5 text-accent" />}
           delay={0.3}
         />
