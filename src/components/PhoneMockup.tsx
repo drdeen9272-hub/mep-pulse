@@ -27,7 +27,7 @@ export default function PhoneMockup({ children, className, scale = "md" }: Phone
 
       {/* Status bar */}
       <div className="flex items-center justify-between px-6 pb-1 pt-8 text-[10px] font-medium text-muted-foreground">
-        <span>9:41</span>
+        <span>10:30</span>
         <div className="flex items-center gap-1">
           <div className="flex gap-[2px]">
             {[1, 2, 3, 4].map((i) => (
