@@ -9,6 +9,7 @@ import EliminationScore from "@/components/dashboard/EliminationScore";
 import SectorFramework from "@/components/dashboard/SectorFramework";
 import ActionPanel from "@/components/dashboard/ActionPanel";
 import AudioBriefing from "@/components/dashboard/AudioBriefing";
+import CountrySelector from "@/components/dashboard/CountrySelector";
 import mrdtImg from "@/assets/mrdt-sample.png";
 import productImg from "@/assets/product-sample.png";
 import { wmr2025KPIs, nigeriaWMR2025 } from "@/data/wmr2025Data";
@@ -29,7 +30,10 @@ export default function DashboardOverview() {
             Sector-wide intelligence — sourced from WMR 2025, MIS 2021, DHIS2 & Sproxil NMDR. Nigeria accounts for {nigeriaWMR2025.shareOfGlobalCases}% of global cases and {nigeriaWMR2025.shareOfGlobalDeaths}% of global deaths.
           </p>
         </div>
-        <ExportButton />
+        <div className="flex items-center gap-3">
+          <CountrySelector />
+          <ExportButton />
+        </div>
       </div>
 
       {/* Elimination Tracking Score — the single most important metric */}

@@ -10,6 +10,8 @@ import NotFound from "./pages/NotFound";
 
 // Dashboard
 import DashboardOverview from "./pages/dashboard/Overview";
+import AfricaOverview from "./pages/dashboard/AfricaOverview";
+import CountryDashboard from "./pages/dashboard/CountryDashboard";
 import Epidemiology from "./pages/dashboard/Epidemiology";
 import Entomology from "./pages/dashboard/Entomology";
 import Diagnostics from "./pages/dashboard/Diagnostics";
@@ -58,6 +60,8 @@ const App = () => (
 
             {/* Dashboard */}
             <Route path="/dashboard" element={<DashboardOverview />} />
+            <Route path="/dashboard/africa" element={<AfricaOverview />} />
+            <Route path="/dashboard/country/:countryCode" element={<CountryDashboard />} />
             <Route path="/dashboard/epidemiology" element={<Epidemiology />} />
             <Route path="/dashboard/entomology" element={<Entomology />} />
             <Route path="/dashboard/diagnostics" element={<Diagnostics />} />
