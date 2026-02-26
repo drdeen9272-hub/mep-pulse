@@ -5,6 +5,8 @@ import KPICard from "@/components/dashboard/KPICard";
 import CountrySelector from "@/components/dashboard/CountrySelector";
 import ExportButton from "@/components/ExportButton";
 import { getCountryByCode, getBurdenColor, type AfricanCountry } from "@/data/africaData";
+import { hasSubnationalData, getSubnationalData } from "@/data/subnationalData";
+import SubnationalMap from "@/components/dashboard/SubnationalMap";
 import { RadialBarChart, RadialBar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 
 function TrendBadge({ trend }: { trend: string }) {
@@ -17,6 +19,7 @@ export default function CountryDashboard() {
   const { countryCode } = useParams();
   const navigate = useNavigate();
   const country = getCountryByCode(countryCode || "");
+  const subnational = getSubnationalData(countryCode || "");
 
   if (!country) {
     return (
@@ -102,6 +105,13 @@ export default function CountryDashboard() {
           delay={0.3}
         />
       </div>
+
+      {/* Subnational breakdown (if available) */}
+      {subnational && (
+        <div className="mb-6">
+          <SubnationalMap data={subnational} countryName={country.name} />
+        </div>
+      )}
 
       {/* Intervention Coverage */}
       <div className="mb-6 grid gap-6 lg:grid-cols-2">
