@@ -1,11 +1,12 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { africanCountries } from "@/data/africaData";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function CountrySelector() {
   const navigate = useNavigate();
   const { countryCode } = useParams();
-  const current = countryCode || "AFRICA";
+  const location = useLocation();
+  const current = countryCode || (location.pathname === "/dashboard" ? "NG" : "AFRICA");
 
   const handleChange = (value: string) => {
     if (value === "AFRICA") navigate("/dashboard/africa");
