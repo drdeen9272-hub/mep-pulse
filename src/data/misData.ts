@@ -6,13 +6,41 @@
 export const eliminationScore = {
   overall: 54,
   components: [
-    { label: "Malaria Prevalence (Microscopy)", current: 22, target: 10, weight: 30, score: 37, unit: "%" },
-    { label: "ITN Ownership", current: 56, target: 80, weight: 15, score: 70, unit: "%" },
-    { label: "ITN Use (Children <5)", current: 41, target: 80, weight: 15, score: 51, unit: "%" },
-    { label: "ITN Use (Pregnant Women)", current: 50, target: 80, weight: 10, score: 63, unit: "%" },
-    { label: "IPTp 3+ Doses", current: 31, target: 60, weight: 10, score: 52, unit: "%" },
-    { label: "Fever Care-Seeking", current: 49, target: 80, weight: 10, score: 61, unit: "%" },
-    { label: "Diagnostic Testing of Febrile Children", current: 34, target: 80, weight: 10, score: 43, unit: "%" },
+    {
+      label: "Malaria Prevalence (Microscopy)", current: 22, target: 10, weight: 30, score: 37, unit: "%",
+      trend: "improving" as const,
+      history: [{ year: "2010", value: 42 }, { year: "2015", value: 27 }, { year: "2021", value: 22 }],
+    },
+    {
+      label: "ITN Ownership", current: 56, target: 80, weight: 15, score: 70, unit: "%",
+      trend: "declining" as const,
+      history: [{ year: "2010", value: 42 }, { year: "2015", value: 50 }, { year: "2018", value: 61 }, { year: "2021", value: 56 }],
+    },
+    {
+      label: "ITN Use (Children <5)", current: 41, target: 80, weight: 15, score: 51, unit: "%",
+      trend: "declining" as const,
+      history: [{ year: "2013", value: 22 }, { year: "2015", value: 43 }, { year: "2018", value: 43 }, { year: "2021", value: 41 }],
+    },
+    {
+      label: "ITN Use (Pregnant Women)", current: 50, target: 80, weight: 10, score: 63, unit: "%",
+      trend: "improving" as const,
+      history: [{ year: "2013", value: 30 }, { year: "2015", value: 39 }, { year: "2018", value: 42 }, { year: "2021", value: 50 }],
+    },
+    {
+      label: "IPTp 3+ Doses", current: 31, target: 60, weight: 10, score: 52, unit: "%",
+      trend: "improving" as const,
+      history: [{ year: "2015", value: 17 }, { year: "2018", value: 17 }, { year: "2021", value: 31 }],
+    },
+    {
+      label: "Fever Care-Seeking", current: 49, target: 80, weight: 10, score: 61, unit: "%",
+      trend: "stable" as const,
+      history: [{ year: "2015", value: 45 }, { year: "2018", value: 48 }, { year: "2021", value: 49 }],
+    },
+    {
+      label: "Diagnostic Testing of Febrile Children", current: 34, target: 80, weight: 10, score: 43, unit: "%",
+      trend: "improving" as const,
+      history: [{ year: "2015", value: 15 }, { year: "2018", value: 24 }, { year: "2021", value: 34 }],
+    },
   ],
 };
 
