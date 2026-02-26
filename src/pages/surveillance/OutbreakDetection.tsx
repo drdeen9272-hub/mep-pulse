@@ -20,7 +20,7 @@ export default function OutbreakDetection() {
           <div>
             <h1 className="font-heading text-2xl font-bold">Outbreak Detection</h1>
             <p className="text-sm text-muted-foreground">
-              Automated epidemic threshold monitoring (mean + 2 SD method) and active alert management across LGAs (districts).
+              Automated epidemic threshold monitoring (mean + 2 SD method) and active alert management across LGAs (Local Government Areas — district-level).
             </p>
           </div>
           <ExportButton />

@@ -21,7 +21,7 @@ export default function Aggregate() {
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="font-heading text-2xl font-bold">Aggregate Reporting</h1>
-            <p className="text-sm text-muted-foreground">Monthly facility-level reporting, completeness tracking, and automated data quality checks.</p>
+            <p className="text-sm text-muted-foreground">Monthly facility-level reporting across LGAs (Local Government Areas — district-level), completeness tracking, and automated data quality checks.</p>
           </div>
           <ExportButton />
         </div>

@@ -48,6 +48,7 @@ export default function Transfers() {
       <div>
         <h1 className="font-heading text-3xl font-bold">Conditional Transfers</h1>
         <p className="mt-1 text-muted-foreground">Incentive system driving Test-Treat-Track accountability — WMR 2025 reports 282M cases globally; financial incentives improve treatment-seeking and ACT adherence.</p>
+        <p className="mt-2 text-xs text-muted-foreground italic">Conditional incentives are calibrated to local purchasing power — ₦1,000 covers approximately 2 days of basic food costs in northern Nigeria.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">

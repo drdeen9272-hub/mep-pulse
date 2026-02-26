@@ -131,10 +131,12 @@ const tabs = [
           <div className="rounded-lg border p-3">
             <div className="text-[10px] text-muted-foreground">Patient Airtime Reward</div>
             <div className="font-heading text-xl font-bold text-success">₦850</div>
+            <div className="text-[8px] text-muted-foreground">(~$0.50 USD)</div>
           </div>
           <div className="rounded-lg border p-3">
             <div className="text-[10px] text-muted-foreground">PPMV Incentive</div>
             <div className="font-heading text-lg font-bold text-secondary">₦150</div>
+            <div className="text-[8px] text-muted-foreground">(~$0.09 USD)</div>
           </div>
         </div>
         <div className="rounded-lg bg-accent/10 p-2 text-center text-[10px] text-accent-foreground">
@@ -151,7 +153,7 @@ export default function HowItWorks() {
   const current = tabs.find((t) => t.key === active)!;
 
   return (
-    <section className="bg-muted/50 py-16 md:py-24">
+    <section id="how-it-works" className="bg-muted/50 py-16 md:py-24">
       <div className="container">
         <div className="mb-10 text-center">
           <h2 className="font-heading text-3xl font-bold md:text-4xl">See How It Works</h2>
