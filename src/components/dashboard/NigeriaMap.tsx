@@ -1,19 +1,31 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { nigeriaStates, getStateBurden } from "@/data/nigeriaData";
+import { nigeriaStates } from "@/data/nigeriaData";
+import { stratificationBands, type TransmissionBand } from "@/data/wmr2025Data";
 import nigeriaMapImg from "@/assets/nigeria-map.png";
+
+const bandColorMap: Record<TransmissionBand, string> = {
+  very_low:   "hsl(145 60% 45%)",
+  low_b:      "hsl(145 40% 55%)",
+  low_a:      "hsl(48 80% 55%)",
+  moderate_b: "hsl(25 80% 55%)",
+  moderate_a: "hsl(0 70% 50%)",
+};
 
 export default function NigeriaMap() {
   const [hovered, setHovered] = useState<string | null>(null);
   const hoveredState = nigeriaStates.find((s) => s.code === hovered);
+  const hoveredBand = hoveredState
+    ? stratificationBands.find((b) => b.key === hoveredState.transmissionBand)
+    : null;
 
   return (
     <div className="rounded-xl border bg-card p-5 shadow-sm">
-      <h3 className="mb-3 font-heading text-sm font-semibold">Malaria Incidence by State</h3>
+      <h3 className="mb-3 font-heading text-sm font-semibold">NMSP Transmission Stratification by State</h3>
       <div className="relative">
         <motion.img
           src={nigeriaMapImg}
-          alt="Nigeria malaria incidence map showing state-by-state burden with color-coded percentages"
+          alt="Nigeria map showing malaria transmission stratification bands by state"
           className="w-full rounded-lg"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -26,6 +38,7 @@ export default function NigeriaMap() {
             const pos = statePositions[state.code];
             if (!pos) return null;
             const isHovered = hovered === state.code;
+            const bandColor = bandColorMap[state.transmissionBand];
             return (
               <g
                 key={state.code}
@@ -36,10 +49,11 @@ export default function NigeriaMap() {
                 <circle
                   cx={pos.x}
                   cy={pos.y}
-                  r={14}
-                  fill={isHovered ? "hsl(var(--primary) / 0.25)" : "transparent"}
-                  stroke={isHovered ? "hsl(var(--primary))" : "transparent"}
-                  strokeWidth="1.5"
+                  r={isHovered ? 16 : 13}
+                  fill={`${bandColor}${isHovered ? "60" : "35"}`}
+                  stroke={isHovered ? bandColor : `${bandColor}80`}
+                  strokeWidth={isHovered ? 2 : 1}
+                  style={{ transition: "all 0.15s ease" }}
                 />
                 <text
                   x={pos.x}
@@ -48,8 +62,8 @@ export default function NigeriaMap() {
                   dominantBaseline="central"
                   className="pointer-events-none select-none font-semibold"
                   style={{
-                    fontSize: isHovered ? "8px" : "6px",
-                    fill: isHovered ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.7)",
+                    fontSize: isHovered ? "7.5px" : "6px",
+                    fill: isHovered ? bandColor : "hsl(var(--foreground) / 0.8)",
                     transition: "all 0.15s ease",
                   }}
                 >
@@ -61,37 +75,41 @@ export default function NigeriaMap() {
         </svg>
 
         {/* Tooltip */}
-        {hoveredState && (
+        {hoveredState && hoveredBand && (
           <motion.div
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute right-2 top-2 rounded-lg border bg-card/95 backdrop-blur-sm p-3 shadow-lg text-xs space-y-1 z-10"
+            className="absolute right-2 top-2 rounded-lg border bg-card/95 backdrop-blur-sm p-3 shadow-lg text-xs space-y-1 z-10 min-w-[160px]"
           >
             <div className="font-semibold">{hoveredState.name} State</div>
-            <div className="text-muted-foreground">Zone: {hoveredState.zone}</div>
-            <div>Cases: {(hoveredState.population * getStateBurden(hoveredState) * 0.058).toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-            <div>Test Positivity: {(42.7 * getStateBurden(hoveredState)).toFixed(1)}%</div>
-            <div>Products Auth'd: {(hoveredState.population * 0.013).toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+            <div className="text-muted-foreground">{hoveredState.zone}</div>
+            <div className="flex items-center gap-1.5">
+              <div className="h-2.5 w-2.5 rounded-full" style={{ background: bandColorMap[hoveredState.transmissionBand] }} />
+              <span className="font-medium" style={{ color: bandColorMap[hoveredState.transmissionBand] }}>
+                {hoveredBand.label}
+              </span>
+            </div>
+            <div>Prevalence: <span className="font-semibold">{hoveredState.prevalence2025}%</span></div>
+            <div className="text-muted-foreground">{hoveredBand.prevalenceRange} band</div>
+            <div>Pop: {(hoveredState.population / 1_000_000).toFixed(1)}M · {hoveredState.lgaCount} LGAs</div>
           </motion.div>
         )}
       </div>
 
-      {/* Legend */}
-      <div className="mt-2 text-center">
-        <p className="text-[10px] font-medium text-muted-foreground mb-1">Test Positivity Rate (TPR)</p>
-        <div className="flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
-        {[
-          { label: "23–30%", color: "hsl(50 90% 75%)" },
-          { label: "31–40%", color: "hsl(45 90% 60%)" },
-          { label: "41–55%", color: "hsl(35 85% 55%)" },
-          { label: "56–75%", color: "hsl(25 80% 50%)" },
-          { label: "76–90%", color: "hsl(0 70% 50%)" },
-        ].map((l) => (
-          <div key={l.label} className="flex items-center gap-1">
-            <div className="h-2.5 w-2.5 rounded-full" style={{ background: l.color }} />
-            {l.label}
-          </div>
-        ))}
+      {/* Legend — stratification bands */}
+      <div className="mt-3">
+        <p className="text-[10px] font-medium text-muted-foreground mb-1.5 text-center">NMSP 2026–2030 Transmission Bands (MIS 2025 Prevalence)</p>
+        <div className="flex flex-wrap items-center justify-center gap-3 text-[10px] text-muted-foreground">
+          {stratificationBands.map((band) => {
+            const count = nigeriaStates.filter((s) => s.transmissionBand === band.key).length;
+            return (
+              <div key={band.key} className="flex items-center gap-1">
+                <div className="h-2.5 w-2.5 rounded-full" style={{ background: band.color }} />
+                <span>{band.label} ({band.prevalenceRange})</span>
+                <span className="font-bold">[{count}]</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
