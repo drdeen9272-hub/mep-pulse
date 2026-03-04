@@ -1,12 +1,15 @@
+import { useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, MapPin, Users, Activity, Shield, Syringe, Bug, Banknote, Target } from "lucide-react";
+import { ArrowLeft, MapPin, Users, Activity, Shield, Syringe, Bug, Banknote, Target, ChevronUp, ChevronDown, Search, Building2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
 import { nigeriaStates } from "@/data/nigeriaData";
 import { stratificationBands, type TransmissionBand } from "@/data/wmr2025Data";
+import { generateLGAData, type LGA } from "@/data/lgaData";
 
 const bandColorMap: Record<TransmissionBand, string> = {
   very_low:   "hsl(145 60% 45%)",
@@ -16,7 +19,6 @@ const bandColorMap: Record<TransmissionBand, string> = {
   moderate_a: "hsl(0 70% 50%)",
 };
 
-// NMSP 2026-2030 recommended intervention mix by transmission band
 const interventionMix: Record<TransmissionBand, { priority: string; interventions: { name: string; icon: React.ElementType; detail: string }[] }> = {
   very_low: {
     priority: "Surveillance & Elimination",
@@ -68,8 +70,7 @@ const interventionMix: Record<TransmissionBand, { priority: string; intervention
   },
 };
 
-// Simulated state-level KPIs
-function getStateKPIs(code: string, band: TransmissionBand, prevalence: number, population: number) {
+function getStateKPIs(_code: string, band: TransmissionBand, prevalence: number, population: number) {
   const itnOwnership = band === "moderate_a" ? 52 + Math.round(prevalence * 0.3) :
                        band === "moderate_b" ? 58 + Math.round(prevalence * 0.4) :
                        band === "low_a" ? 65 + Math.round(prevalence * 0.5) : 72 + Math.round(prevalence * 0.3);
@@ -81,11 +82,10 @@ function getStateKPIs(code: string, band: TransmissionBand, prevalence: number, 
   const iptpCoverage = Math.round(28 + Math.random() * 35);
   const estimatedCases = Math.round(population * prevalence / 100 * 1.8);
   const estimatedDeaths = Math.round(estimatedCases * 0.0027);
-
   return { itnOwnership, itnUse, testRate, tpr, actCoverage, smcCoverage, iptpCoverage, estimatedCases, estimatedDeaths };
 }
 
-function MetricBar({ label, value, max = 100, color }: { label: string; value: number; max?: number; color?: string }) {
+function MetricBar({ label, value, max = 100 }: { label: string; value: number; max?: number; color?: string }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
@@ -97,6 +97,126 @@ function MetricBar({ label, value, max = 100, color }: { label: string; value: n
   );
 }
 
+// ---------- LGA Table ----------
+type SortKey = keyof Pick<LGA, "name" | "population" | "prevalence" | "itnCoverage" | "actCoverage" | "smcCoverage" | "testPositivityRate" | "phcCount" | "chwCount">;
+
+function LGATable({ lgas }: { lgas: LGA[] }) {
+  const [sortKey, setSortKey] = useState<SortKey>("prevalence");
+  const [sortAsc, setSortAsc] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    let list = [...lgas];
+    if (search) list = list.filter(l => l.name.toLowerCase().includes(search.toLowerCase()));
+    list.sort((a, b) => {
+      const av = a[sortKey], bv = b[sortKey];
+      if (typeof av === "string") return sortAsc ? av.localeCompare(bv as string) : (bv as string).localeCompare(av);
+      return sortAsc ? (av as number) - (bv as number) : (bv as number) - (av as number);
+    });
+    return list;
+  }, [lgas, sortKey, sortAsc, search]);
+
+  const toggle = (key: SortKey) => {
+    if (sortKey === key) setSortAsc(!sortAsc);
+    else { setSortKey(key); setSortAsc(false); }
+  };
+
+  const SortIcon = ({ col }: { col: SortKey }) => {
+    if (sortKey !== col) return <ChevronDown className="h-3 w-3 opacity-30" />;
+    return sortAsc ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />;
+  };
+
+  const cols: { key: SortKey; label: string; right?: boolean }[] = [
+    { key: "name", label: "LGA" },
+    { key: "population", label: "Pop", right: true },
+    { key: "prevalence", label: "Prev%", right: true },
+    { key: "itnCoverage", label: "ITN%", right: true },
+    { key: "actCoverage", label: "ACT%", right: true },
+    { key: "smcCoverage", label: "SMC%", right: true },
+    { key: "testPositivityRate", label: "TPR%", right: true },
+    { key: "phcCount", label: "PHCs", right: true },
+    { key: "chwCount", label: "CHWs", right: true },
+  ];
+
+  const prevColor = (v: number) =>
+    v >= 15 ? "text-destructive" : v >= 10 ? "text-orange-500" : v >= 5 ? "text-yellow-600" : "text-green-600";
+
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2">
+            <Building2 className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-base">LGA-Level Breakdown</CardTitle>
+            <Badge variant="secondary" className="text-[10px]">{lgas.length} LGAs</Badge>
+          </div>
+          <div className="relative w-full sm:w-56">
+            <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+            <Input
+              placeholder="Search LGA…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="h-8 pl-8 text-xs"
+            />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="px-2 sm:px-6">
+        <div className="max-h-[420px] overflow-auto rounded-md border">
+          <table className="w-full text-[11px]">
+            <thead className="sticky top-0 bg-muted/95 backdrop-blur-sm z-10">
+              <tr>
+                {cols.map(c => (
+                  <th
+                    key={c.key}
+                    onClick={() => toggle(c.key)}
+                    className={`cursor-pointer select-none whitespace-nowrap px-2.5 py-2 font-semibold text-muted-foreground hover:text-foreground transition-colors ${c.right ? "text-right" : "text-left"}`}
+                  >
+                    <span className="inline-flex items-center gap-0.5">
+                      {c.label} <SortIcon col={c.key} />
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((lga, i) => (
+                <motion.tr
+                  key={lga.name}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: Math.min(i * 0.01, 0.3) }}
+                  className="border-b border-muted/40 hover:bg-muted/30 transition-colors"
+                >
+                  <td className="px-2.5 py-1.5 font-medium">{lga.name}</td>
+                  <td className="px-2.5 py-1.5 text-right tabular-nums">{(lga.population / 1000).toFixed(0)}K</td>
+                  <td className={`px-2.5 py-1.5 text-right font-semibold tabular-nums ${prevColor(lga.prevalence)}`}>{lga.prevalence}</td>
+                  <td className="px-2.5 py-1.5 text-right tabular-nums">{lga.itnCoverage}</td>
+                  <td className="px-2.5 py-1.5 text-right tabular-nums">{lga.actCoverage}</td>
+                  <td className="px-2.5 py-1.5 text-right tabular-nums">{lga.smcCoverage > 0 ? lga.smcCoverage : "—"}</td>
+                  <td className="px-2.5 py-1.5 text-right tabular-nums">{lga.testPositivityRate}</td>
+                  <td className="px-2.5 py-1.5 text-right tabular-nums">{lga.phcCount}</td>
+                  <td className="px-2.5 py-1.5 text-right tabular-nums">{lga.chwCount}</td>
+                </motion.tr>
+              ))}
+              {filtered.length === 0 && (
+                <tr><td colSpan={9} className="py-6 text-center text-muted-foreground">No LGAs match your search.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-2 text-[10px] text-muted-foreground text-center">
+          Click column headers to sort · Prevalence color: <span className="text-green-600 font-semibold">&lt;5%</span>{" "}
+          <span className="text-yellow-600 font-semibold">5–9%</span>{" "}
+          <span className="text-orange-500 font-semibold">10–14%</span>{" "}
+          <span className="text-destructive font-semibold">≥15%</span>
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ---------- Main Page ----------
 export default function StateDetail() {
   const { stateCode } = useParams<{ stateCode: string }>();
   const navigate = useNavigate();
@@ -117,6 +237,7 @@ export default function StateDetail() {
   const mix = interventionMix[state.transmissionBand];
   const kpis = getStateKPIs(state.code, state.transmissionBand, state.prevalence2025, state.population);
   const bandColor = bandColorMap[state.transmissionBand];
+  const lgas = useMemo(() => generateLGAData(state), [state]);
 
   return (
     <motion.div
@@ -226,6 +347,9 @@ export default function StateDetail() {
           </CardContent>
         </Card>
       </div>
+
+      {/* LGA Breakdown Table */}
+      <LGATable lgas={lgas} />
 
       {/* Stratification context */}
       <Card>
