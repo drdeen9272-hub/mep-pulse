@@ -57,13 +57,13 @@ const keyAssumptions = [
       "IPTp coverage uses ANC-based estimates. Women not attending ANC (estimated 33%) are assumed to have near-zero IPTp coverage.",
       "SMC coverage assumes 4 complete cycles. Partial cycle completion (receiving 1–3 of 4 cycles) provides reduced but non-zero protection.",
       "ACT treatment rates assume first-line artemether-lumefantrine. Monotherapy and herbal treatment (estimated 15–20% of treatments) are excluded.",
-      "Vaccine rollout (RTS,S/AS01) projected based on Gavi allocation; Nigeria's inclusion assumed from 2025 pending NPHCDA approval.",
+      "Malaria vaccine rollout began in Nigeria in December 2024, starting in Kebbi and Bayelsa states targeting children aged 5–23 months. Approximately 80,000 children received MV1 in the initial phase.",
     ],
   },
   {
     category: "Financing",
     assumptions: [
-      "Total global need of $8.3B annually (GTS 2025 target). Nigeria's proportional share estimated at ~$2B based on burden-weighted allocation.",
+      "Total global need of $9.3B annually (GTS 2025 target). Nigeria's proportional share estimated at ~$2.3B based on burden-weighted allocation.",
       "Domestic funding projections assume continued growth at 15% CAGR from the 2024 baseline of $158M. Political transitions may affect actual allocations.",
       "Global Fund replenishment for 2024–2026 cycle assumes flat funding. USAID/PMI contributions assume 10–15% reduction based on 2025 policy changes.",
       "Cost-effectiveness ratios (cost per case averted, cost per DALY) are based on WHO-CHOICE 2023 values adapted for Nigeria's cost environment.",
