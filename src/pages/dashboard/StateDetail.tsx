@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
 import { Input } from "@/components/ui/input";
 import { nigeriaStates } from "@/data/nigeriaData";
 import { stratificationBands, type TransmissionBand } from "@/data/wmr2025Data";
@@ -93,6 +94,89 @@ function MetricBar({ label, value, max = 100 }: { label: string; value: number; 
         <span className="font-semibold">{value}{max === 100 ? "%" : ""}</span>
       </div>
       <Progress value={(value / max) * 100} className="h-2" />
+    </div>
+  );
+}
+
+// ---------- LGA Charts ----------
+function LGACharts({ lgas, statePrevalence }: { lgas: LGA[]; statePrevalence: number }) {
+  const sortedByPrev = useMemo(() =>
+    [...lgas].sort((a, b) => b.prevalence - a.prevalence).slice(0, 15).map(l => ({
+      name: l.name.length > 12 ? l.name.slice(0, 10) + "…" : l.name,
+      prevalence: l.prevalence,
+      fill: l.prevalence >= 15 ? "hsl(0 70% 50%)" : l.prevalence >= 10 ? "hsl(25 80% 55%)" : l.prevalence >= 5 ? "hsl(48 80% 55%)" : "hsl(145 60% 45%)",
+    })), [lgas]);
+
+  // Histogram: prevalence distribution buckets
+  const histogram = useMemo(() => {
+    const buckets = [
+      { range: "0–4%", min: 0, max: 5, count: 0, color: "hsl(145 60% 45%)" },
+      { range: "5–9%", min: 5, max: 10, count: 0, color: "hsl(48 80% 55%)" },
+      { range: "10–14%", min: 10, max: 15, count: 0, color: "hsl(25 80% 55%)" },
+      { range: "15–19%", min: 15, max: 20, count: 0, color: "hsl(0 70% 55%)" },
+      { range: "20–24%", min: 20, max: 25, count: 0, color: "hsl(0 70% 45%)" },
+      { range: "25%+", min: 25, max: 100, count: 0, color: "hsl(0 60% 35%)" },
+    ];
+    lgas.forEach(l => {
+      const b = buckets.find(b => l.prevalence >= b.min && l.prevalence < b.max);
+      if (b) b.count++;
+    });
+    return buckets.filter(b => b.count > 0);
+  }, [lgas]);
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-2">
+      {/* Prevalence distribution histogram */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Prevalence Distribution</CardTitle>
+          <p className="text-xs text-muted-foreground">Number of LGAs by prevalence range</p>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={histogram} margin={{ left: 0, right: 10, top: 5, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+              <XAxis dataKey="range" tick={{ fontSize: 10 }} />
+              <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
+              <Tooltip
+                formatter={(v: number) => [`${v} LGAs`, "Count"]}
+                contentStyle={{ fontSize: 11, borderRadius: 8 }}
+              />
+              <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                {histogram.map((e, i) => <Cell key={i} fill={e.color} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Top LGAs by prevalence */}
+      <Card>
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-base">Top LGAs by Prevalence</CardTitle>
+              <p className="text-xs text-muted-foreground">Highest burden LGAs vs state avg ({statePrevalence}%)</p>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={sortedByPrev} layout="vertical" margin={{ left: 70, right: 10, top: 5, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" opacity={0.15} horizontal={false} />
+              <XAxis type="number" tick={{ fontSize: 9 }} domain={[0, "auto"]} unit="%" />
+              <YAxis type="category" dataKey="name" tick={{ fontSize: 9 }} width={65} />
+              <Tooltip
+                formatter={(v: number) => [`${v}%`, "Prevalence"]}
+                contentStyle={{ fontSize: 11, borderRadius: 8 }}
+              />
+              <Bar dataKey="prevalence" radius={[0, 4, 4, 0]}>
+                {sortedByPrev.map((e, i) => <Cell key={i} fill={e.fill} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -347,6 +431,9 @@ export default function StateDetail() {
           </CardContent>
         </Card>
       </div>
+
+      {/* LGA Charts */}
+      <LGACharts lgas={lgas} statePrevalence={state.prevalence2025} />
 
       {/* LGA Breakdown Table */}
       <LGATable lgas={lgas} />
