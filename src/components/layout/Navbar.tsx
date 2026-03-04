@@ -23,7 +23,7 @@ const navItems = [
       { label: "MIS 2021 Scorecard", to: "/dashboard/mis-2021" },
       { label: "Assumptions & Methodology", to: "/dashboard/assumptions" },
       { label: "Data Triangulation (MIS×WMR×SMIS)", to: "/dashboard/data-comparison" },
-      
+      { label: "📋 NMSP 2026–2030 Tracker", to: "/dashboard/nmsp-tracker" },
     ],
   },
   {

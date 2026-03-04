@@ -24,6 +24,7 @@ import MIS2021 from "./pages/dashboard/MIS2021";
 import Assumptions from "./pages/dashboard/Assumptions";
 import DataComparison from "./pages/dashboard/DataComparison";
 import CountryComparison from "./pages/dashboard/CountryComparison";
+import NMSPTracker from "./pages/dashboard/NMSPTracker";
 
 
 // Surveillance
@@ -75,7 +76,7 @@ const App = () => (
             <Route path="/dashboard/mis-2021" element={<MIS2021 />} />
             <Route path="/dashboard/assumptions" element={<Assumptions />} />
             <Route path="/dashboard/data-comparison" element={<DataComparison />} />
-            
+            <Route path="/dashboard/nmsp-tracker" element={<NMSPTracker />} />
 
             {/* Surveillance */}
             <Route path="/surveillance/case-based" element={<CaseBased />} />
