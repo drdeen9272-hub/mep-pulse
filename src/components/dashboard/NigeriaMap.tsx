@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { nigeriaStates } from "@/data/nigeriaData";
 import { stratificationBands, type TransmissionBand } from "@/data/wmr2025Data";
@@ -13,6 +14,7 @@ const bandColorMap: Record<TransmissionBand, string> = {
 };
 
 export default function NigeriaMap() {
+  const navigate = useNavigate();
   const [hovered, setHovered] = useState<string | null>(null);
   const hoveredState = nigeriaStates.find((s) => s.code === hovered);
   const hoveredBand = hoveredState
@@ -44,6 +46,7 @@ export default function NigeriaMap() {
                 key={state.code}
                 onMouseEnter={() => setHovered(state.code)}
                 onMouseLeave={() => setHovered(null)}
+                onClick={() => navigate(`/dashboard/state/${state.code}`)}
                 className="cursor-pointer"
               >
                 <circle
