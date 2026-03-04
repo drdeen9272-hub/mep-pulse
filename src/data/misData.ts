@@ -1,45 +1,82 @@
 // Nigeria Malaria Indicator Survey (MIS) 2021 — Key Findings
 // Source: NMEP, NPC, ICF. Nigeria MIS 2021 Final Report. November 2022.
+// Elimination Score now aligned with NMSP 2026-2030 Strategic Objectives
 
 // ── Elimination Tracking Score ──
-// Composite score (0–100) derived from weighted MIS indicators vs 2025 NMSP targets
+// Composite score (0–100) derived from the 5 NMSP 2026-2030 strategic objectives
+// Each objective is scored as (baseline / target2030) × 100, capped at 100
 export const eliminationScore = {
-  overall: 54,
+  overall: 51,
   components: [
     {
-      label: "Malaria Prevalence (Microscopy)", current: 22, target: 10, weight: 30, score: 37, unit: "%",
+      label: "Governance & Capacity",
+      current: 62, target: 90, weight: 20, score: 69, unit: "%",
       trend: "improving" as const,
-      history: [{ year: "2010", value: 42 }, { year: "2015", value: 27 }, { year: "2021", value: 22 }],
+      objectiveId: 1,
+      description: "Strengthen governance and improve organizational capacity for malaria programme implementation",
+      history: [
+        { year: "2021", value: 45 },
+        { year: "2022", value: 67 },
+        { year: "2023", value: 63 },
+        { year: "2024", value: 82 },
+        { year: "2025", value: 62 },
+      ],
     },
     {
-      label: "ITN Ownership", current: 56, target: 80, weight: 15, score: 70, unit: "%",
+      label: "Prevention Access",
+      current: 64, target: 80, weight: 25, score: 80, unit: "%",
+      trend: "improving" as const,
+      objectiveId: 2,
+      description: "Improve access to and utilization of preventive interventions (ITN, IRS, SMC, IPTp, vaccine)",
+      history: [
+        { year: "2021", value: 45 },
+        { year: "2022", value: 67 },
+        { year: "2023", value: 63 },
+        { year: "2024", value: 82 },
+        { year: "2025", value: 64 },
+      ],
+    },
+    {
+      label: "Diagnosis & Treatment",
+      current: 69, target: 80, weight: 25, score: 86, unit: "%",
+      trend: "improving" as const,
+      objectiveId: 3,
+      description: "Improve effective coverage for diagnosis and appropriate treatment for all target populations",
+      history: [
+        { year: "2021", value: 60 },
+        { year: "2022", value: 57 },
+        { year: "2023", value: 83 },
+        { year: "2024", value: 77 },
+        { year: "2025", value: 69 },
+      ],
+    },
+    {
+      label: "Surveillance Systems",
+      current: 47, target: 70, weight: 15, score: 67, unit: "%",
       trend: "declining" as const,
-      history: [{ year: "2010", value: 42 }, { year: "2015", value: 50 }, { year: "2018", value: 61 }, { year: "2021", value: 56 }],
+      objectiveId: 4,
+      description: "Improve effectiveness of malaria surveillance in generating complete, timely, and accurate data",
+      history: [
+        { year: "2021", value: 38 },
+        { year: "2022", value: 71 },
+        { year: "2023", value: 81 },
+        { year: "2024", value: 66 },
+        { year: "2025", value: 47 },
+      ],
     },
     {
-      label: "ITN Use (Children <5)", current: 41, target: 80, weight: 15, score: 51, unit: "%",
+      label: "Domestic Financing",
+      current: 54, target: 80, weight: 15, score: 68, unit: "%",
       trend: "declining" as const,
-      history: [{ year: "2013", value: 22 }, { year: "2015", value: 43 }, { year: "2018", value: 43 }, { year: "2021", value: 41 }],
-    },
-    {
-      label: "ITN Use (Pregnant Women)", current: 50, target: 80, weight: 10, score: 63, unit: "%",
-      trend: "improving" as const,
-      history: [{ year: "2013", value: 30 }, { year: "2015", value: 39 }, { year: "2018", value: 42 }, { year: "2021", value: 50 }],
-    },
-    {
-      label: "IPTp 3+ Doses", current: 31, target: 60, weight: 10, score: 52, unit: "%",
-      trend: "improving" as const,
-      history: [{ year: "2015", value: 17 }, { year: "2018", value: 17 }, { year: "2021", value: 31 }],
-    },
-    {
-      label: "Fever Care-Seeking", current: 49, target: 80, weight: 10, score: 61, unit: "%",
-      trend: "stable" as const,
-      history: [{ year: "2015", value: 45 }, { year: "2018", value: 48 }, { year: "2021", value: 49 }],
-    },
-    {
-      label: "Diagnostic Testing of Febrile Children", current: 34, target: 80, weight: 10, score: 43, unit: "%",
-      trend: "improving" as const,
-      history: [{ year: "2015", value: 15 }, { year: "2018", value: 24 }, { year: "2021", value: 34 }],
+      objectiveId: 5,
+      description: "Achieve sustainable malaria financing with at least 80% from domestic resources",
+      history: [
+        { year: "2021", value: 40 },
+        { year: "2022", value: 69 },
+        { year: "2023", value: 52 },
+        { year: "2024", value: 55 },
+        { year: "2025", value: 54 },
+      ],
     },
   ],
 };

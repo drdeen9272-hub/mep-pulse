@@ -23,7 +23,7 @@ type Component = (typeof eliminationScore.components)[number];
 
 function TrendModal({ component, onClose }: { component: Component; onClose: () => void }) {
   const data = component.history.map(h => ({ ...h, target: component.target }));
-  const isInverse = component.label.includes("Prevalence"); // lower is better
+  const desc = (component as any).description as string | undefined;
 
   return (
     <motion.div
@@ -44,7 +44,7 @@ function TrendModal({ component, onClose }: { component: Component; onClose: () 
           <div>
             <h3 className="font-heading text-base font-bold">{component.label}</h3>
             <p className="text-xs text-muted-foreground">
-              Longitudinal trend — {isInverse ? "lower is better" : "higher is better"}
+              {desc || "Longitudinal trend — higher is better"}
             </p>
           </div>
           <button onClick={onClose} className="rounded-lg p-1 hover:bg-muted">
@@ -80,10 +80,10 @@ function TrendModal({ component, onClose }: { component: Component; onClose: () 
 
         <div className="mt-4 rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
           {component.trend === "improving"
-            ? `✅ Progress is positive. ${isInverse ? "Prevalence declining" : "Coverage increasing"} across survey periods. Sustain current interventions.`
+            ? `✅ Progress is positive. Performance increasing across review periods. Sustain current interventions and scale up.`
             : component.trend === "declining"
-            ? `⚠️ Momentum has reversed. ${component.label} was higher in earlier surveys. Investigate supply chain, distribution, or behavioral factors.`
-            : `➡️ Indicator has plateaued. New strategies may be needed to break through the current level.`}
+            ? `⚠️ Momentum has reversed. ${component.label} was higher in earlier periods. Investigate systemic bottlenecks and funding gaps.`
+            : `➡️ Indicator has plateaued. New strategies from NMSP 2026–2030 may be needed to break through.`}
         </div>
       </motion.div>
     </motion.div>
@@ -126,15 +126,15 @@ export default function EliminationScore() {
           </div>
 
           <div className="flex-1 space-y-1 text-center md:text-left">
-            <h2 className="font-heading text-xl font-bold">Malaria Elimination Tracking Score</h2>
+            <h2 className="font-heading text-xl font-bold">NMSP 2026–2030 Elimination Tracking Score</h2>
             <p className="text-sm text-muted-foreground">
-              Composite score based on 7 key MIS 2021 indicators weighted against Nigeria's 2025 NMSP targets.
+              Composite score based on 5 NMSP 2026–2030 strategic objectives weighted against programme targets.
             </p>
             <div className="flex items-center justify-center gap-2 md:justify-start">
               <span className={cn("text-3xl font-bold", color)}>Grade {grade}</span>
               <span className="rounded-full bg-muted px-3 py-0.5 text-xs font-medium">{label}</span>
             </div>
-            <p className="text-[11px] text-muted-foreground">Click any indicator below to see its longitudinal trend →</p>
+            <p className="text-[11px] text-muted-foreground">Click any objective below to see its longitudinal trend →</p>
           </div>
         </div>
 
