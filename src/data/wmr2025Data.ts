@@ -152,3 +152,136 @@ export const drugResistance = {
   mftRecommended: true,
   description: "Partial resistance to artemisinin confirmed or suspected in multiple African countries. Early signs of declining efficacy of ACT partner drugs. pfhrp2/3 gene deletions identified in 42 countries, undermining HRP2-based RDT accuracy.",
 };
+
+// ======================================================================
+// NMSP 2026-2030 — Nigeria National Malaria Strategic Plan
+// ======================================================================
+
+// --- Transmission Stratification Bands (Section 3.2.5 / Fig 8) ---
+export type TransmissionBand =
+  | "very_low"    // prevalence 0 to <1%
+  | "low_b"       // prevalence 1 to <5%
+  | "low_a"       // prevalence 5 to <10%
+  | "moderate_b"  // prevalence 10 to <15%
+  | "moderate_a"; // prevalence 15 to <35%
+
+export interface StratificationBand {
+  key: TransmissionBand;
+  label: string;
+  prevalenceRange: string;
+  apiRange: string;
+  color: string; // semantic HSL token-friendly
+}
+
+export const stratificationBands: StratificationBand[] = [
+  { key: "very_low",   label: "Very Low",   prevalenceRange: "0–<1%",   apiRange: "<100/1000",     color: "hsl(145 60% 45%)" },
+  { key: "low_b",      label: "Low-B",      prevalenceRange: "1–<5%",   apiRange: "100–250/1000",  color: "hsl(145 40% 55%)" },
+  { key: "low_a",      label: "Low-A",      prevalenceRange: "5–<10%",  apiRange: "100–250/1000",  color: "hsl(48 80% 55%)" },
+  { key: "moderate_b", label: "Moderate-B", prevalenceRange: "10–<15%", apiRange: "250–450/1000",  color: "hsl(25 80% 55%)" },
+  { key: "moderate_a", label: "Moderate-A", prevalenceRange: "15–<35%", apiRange: "≥450/1000",     color: "hsl(0 70% 50%)" },
+];
+
+// --- NMSP 2026-2030 Goals (Section 4.4.1) ---
+export const nmspGoals = {
+  national: {
+    prevalenceReductionPct: 60,       // 60% reduction from 2025 levels
+    mortalityReductionPct: 60,        // 60% reduction in malaria deaths
+    baselinePrevalence2025: 15,       // % among children <5 (MIS 2025)
+    targetPrevalence2030: 6,          // 15 × 0.40 = 6%
+    baselineUnder5Mortality: 110,     // per 1000 live births (NDHS 2024)
+  },
+  subnational: {
+    lowPrevalenceTarget: "very_low" as TransmissionBand,  // achieve very low in low-prev states
+    moderateReductionPct: 60,         // 60% reduction in moderate states
+    highReductionPct: 30,             // 30% reduction in (previously) high states
+  },
+};
+
+// --- NMSP 2026-2030 Strategic Objectives (Section 4.4.2) ---
+export interface NMSPObjective {
+  id: number;
+  title: string;
+  shortTitle: string;
+  baseline: number | string;
+  target2030: number | string;
+  unit: string;
+}
+
+export const nmspObjectives: NMSPObjective[] = [
+  {
+    id: 1,
+    title: "Strengthen governance and improve organizational capacity for malaria programme implementation",
+    shortTitle: "Governance & Capacity",
+    baseline: 62,
+    target2030: 90,
+    unit: "%",
+  },
+  {
+    id: 2,
+    title: "Improve access to and utilization of preventive interventions",
+    shortTitle: "Prevention Access",
+    baseline: 64,
+    target2030: 80,
+    unit: "%",
+  },
+  {
+    id: 3,
+    title: "Improve effective coverage for diagnosis and appropriate treatment for all target populations",
+    shortTitle: "Diagnosis & Treatment",
+    baseline: 69,
+    target2030: 80,
+    unit: "%",
+  },
+  {
+    id: 4,
+    title: "Improve effectiveness of malaria surveillance systems in generating complete, timely, and accurate data",
+    shortTitle: "Surveillance",
+    baseline: 47,
+    target2030: 70,
+    unit: "%",
+  },
+  {
+    id: 5,
+    title: "Achieve sustainable malaria financing with resources mobilized from domestic sources",
+    shortTitle: "Domestic Financing",
+    baseline: 54,
+    target2030: 80,
+    unit: "%",
+  },
+];
+
+// --- Previous NMSP 2021-2025 Performance (MPR 2025, Section 3.3.3) ---
+export const previousNMSPPerformance = {
+  overallImplementationRate: 62,  // %
+  rating: "Low" as const,        // WHO scale: High >90%, Moderate 75-90%, Low <75%
+  objectivePerformance: [
+    { id: 1, title: "Vector Control",                      avg: 64, y2021: 45, y2022: 67, y2023: 63, y2024: 82 },
+    { id: 2, title: "Chemoprevention, Diagnosis & Treatment", avg: 69, y2021: 60, y2022: 57, y2023: 83, y2024: 77 },
+    { id: 3, title: "Surveillance & Data",                 avg: 64, y2021: 38, y2022: 71, y2023: 81, y2024: 66 },
+    { id: 4, title: "Coordination & Partnerships",         avg: 60, y2021: 63, y2022: 56, y2023: 50, y2024: 70 },
+    { id: 5, title: "Financing & Sustainability",          avg: 54, y2021: 40, y2022: 69, y2023: 52, y2024: 55 },
+  ],
+};
+
+// --- Key Intervention Milestones from NMSP (Section 3.3.4) ---
+export const nmspInterventionData = {
+  itnHouseholdOwnership2024: 59,              // %
+  itnOwnership1Per2People: 32,                // %
+  itnUsePregWomen: 46,                         // %, declined from 50%
+  itnUseUrban: 80,                             // %
+  itnUseRural: 87,                             // %
+  smcStates: 21,                               // scaled from 9
+  smcChildrenReached: 28_000_000,              // ~28 million (3-59 months)
+  iptpCoverage3PlusDoses: 27,                  // % (NDHS 2024)
+  vaccineR21StatesRolledOut: ["Kebbi", "Bayelsa"],
+  vaccineChildrenYear1: 58_000,                // 25% of MV1 target
+  tprDecline: { from: 76, to: 73, years: "2021-2024" },
+  actEfficacy: 98,                             // % (TES 2021-2023)
+  surveillanceCoverage2022: 47,                // % of all malaria cases tracked
+  population2025: 237_000_000,
+  under15Pct: 46,                              // %
+  refugeesAndAsylumSeekers: 126_000,
+  healthBudgetPctOfNational: "4-5%",           // vs 15% Abuja Declaration
+  oopExpenditure2024: 84,                      // % (up from 71% in 2018)
+  malariaDirectGovFunding: "<1% of health budget",
+};
