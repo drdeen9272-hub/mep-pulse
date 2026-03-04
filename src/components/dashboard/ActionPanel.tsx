@@ -4,7 +4,8 @@ import { Sparkles, Loader2, Clock, CalendarDays, Target, CheckCircle2, Circle, A
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { eliminationScore } from "@/data/misData";
-import { nigeriaWMR2025 } from "@/data/wmr2025Data";
+import { nigeriaWMR2025, nmspGoals, nmspObjectives, nmspInterventionData, stratificationBands } from "@/data/wmr2025Data";
+import { nigeriaStates } from "@/data/nigeriaData";
 import { supabase } from "@/integrations/supabase/client";
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/dashboard-actions`;
@@ -49,19 +50,56 @@ const nextStatus: Record<ActionStatus, ActionStatus> = {
 };
 
 function buildPromptContext() {
+  const objectives = nmspObjectives.map(o =>
+    `Objective ${o.id} — ${o.shortTitle}: baseline ${o.baseline}${o.unit}, target ${o.target2030}${o.unit} by 2030`
+  ).join("\n");
+
   const indicators = eliminationScore.components.map(c =>
     `${c.label}: ${c.current}${c.unit} (target: ${c.target}${c.unit}, trend: ${c.trend}, score: ${c.score}/100)`
   ).join("\n");
 
-  return `Nigeria Malaria Elimination Dashboard Status:
-Overall Elimination Score: ${eliminationScore.overall}/100
-Nigeria accounts for ${nigeriaWMR2025.shareOfGlobalCases}% of global malaria cases and ${nigeriaWMR2025.shareOfGlobalDeaths}% of global malaria deaths.
+  const bandDistribution = stratificationBands.map(b => {
+    const count = nigeriaStates.filter(s => s.transmissionBand === b.key).length;
+    const states = nigeriaStates.filter(s => s.transmissionBand === b.key).map(s => s.name).join(", ");
+    return `${b.label} (${b.prevalenceRange}): ${count} states — ${states}`;
+  }).join("\n");
 
-Indicator Breakdown:
+  return `NMSP 2026–2030 Nigeria Malaria Dashboard Status:
+
+=== NATIONAL GOALS ===
+- Reduce prevalence by ${nmspGoals.national.prevalenceReductionPct}% from 2025 baseline (${nmspGoals.national.baselinePrevalence2025}% → ${nmspGoals.national.targetPrevalence2030}%)
+- Reduce malaria deaths by ${nmspGoals.national.mortalityReductionPct}% from 2025 levels
+- Nigeria: ${nigeriaWMR2025.shareOfGlobalCases}% of global cases, ${nigeriaWMR2025.shareOfGlobalDeaths}% of global deaths
+- Population: ${(nmspInterventionData.population2025 / 1_000_000).toFixed(0)}M (${nmspInterventionData.under15Pct}% under 15)
+- Previous NMSP overall implementation rate: 62% (Low rating by WHO methodology)
+
+=== NMSP 2026–2030 STRATEGIC OBJECTIVES ===
+${objectives}
+
+=== CURRENT PERFORMANCE (Elimination Tracking Score: ${eliminationScore.overall}/100) ===
 ${indicators}
 
-Key declining indicators: ${eliminationScore.components.filter(c => c.trend === "declining").map(c => c.label).join(", ")}
-Key improving indicators: ${eliminationScore.components.filter(c => c.trend === "improving").map(c => c.label).join(", ")}`;
+=== TRANSMISSION STRATIFICATION (Sub-National Tailoring) ===
+No states currently classified as high burden (>35%). Five bands:
+${bandDistribution}
+
+=== KEY INTERVENTION DATA ===
+- ITN household ownership: ${nmspInterventionData.itnHouseholdOwnership2024}% (but only ${nmspInterventionData.itnOwnership1Per2People}% own 1 per 2 people)
+- ITN use pregnant women: ${nmspInterventionData.itnUsePregWomen}% (declined from 50%)
+- SMC: scaled to ${nmspInterventionData.smcStates} states, ${(nmspInterventionData.smcChildrenReached / 1_000_000).toFixed(0)}M children
+- IPTp 3+ doses: ${nmspInterventionData.iptpCoverage3PlusDoses}% (critically low)
+- Malaria vaccine R21: rolled out in ${nmspInterventionData.vaccineR21StatesRolledOut.join(", ")} — ${nmspInterventionData.vaccineChildrenYear1.toLocaleString()} children (25% of target)
+- Surveillance coverage: ${nmspInterventionData.surveillanceCoverage2022}% of cases tracked (target: 70%)
+- ACT efficacy: ${nmspInterventionData.actEfficacy}% (TES 2021-2023)
+- Health budget: ${nmspInterventionData.healthBudgetPctOfNational} of national budget (vs 15% Abuja Declaration)
+- Out-of-pocket expenditure: ${nmspInterventionData.oopExpenditure2024}% (rose from 71% in 2018)
+- Malaria direct government funding: ${nmspInterventionData.malariaDirectGovFunding}
+
+=== DECLINING INDICATORS ===
+${eliminationScore.components.filter(c => c.trend === "declining").map(c => `- ${c.label}: ${c.current}${c.unit}`).join("\n")}
+
+=== IMPROVING INDICATORS ===
+${eliminationScore.components.filter(c => c.trend === "improving").map(c => `- ${c.label}: ${c.current}${c.unit}`).join("\n")}`;
 }
 
 function parseActionsToItems(text: string, timeline: Timeline): Omit<ActionItem, "id" | "created_at" | "updated_at" | "completed_at">[] {

@@ -13,20 +13,25 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const systemPrompt = `You are a senior malaria elimination strategist advising Nigeria's National Malaria Elimination Programme. Based on the dashboard data provided, generate actionable recommendations.
+    const systemPrompt = `You are a senior malaria elimination strategist advising Nigeria's National Malaria Elimination Programme (NMEP) under the NMSP 2026–2030 framework. Based on the dashboard data provided, generate actionable recommendations aligned with the five NMSP strategic objectives.
+
+Context you MUST use:
+- Nigeria uses a 5-band Sub-National Tailoring (SNT) approach: Very Low (<1%), Low-B (1-5%), Low-A (5-10%), Moderate-B (10-15%), Moderate-A (15-35%). No states are currently high burden (>35%).
+- The NMSP 2026-2030 has 5 objectives: (1) Governance & Capacity → 90%, (2) Prevention Access → 80%, (3) Diagnosis & Treatment → 80%, (4) Surveillance → 47% to 70%, (5) Domestic Financing → 80%.
+- Intervention mixes vary by band: Moderate-A/B states get mass ITN + IRS + SMC/PMC; Low-A states get targeted ITN + IRS; Low-B/Very Low states focus on continuous ITN, focal IRS, and active case detection.
+- Previous NMSP scored 62% overall (Low by WHO). Financing (54%) and coordination (60%) were weakest.
+- Key gaps: IPTp3+ at only 27%, ITN 1:2 ratio at 32%, surveillance at 47%, OOP at 84%, vaccine at 25% of target.
 
 Return a JSON object with exactly three keys:
-- "shortTerm": Markdown-formatted list of 3-4 urgent actions for the next 0-3 months
-- "mediumTerm": Markdown-formatted list of 3-4 strategic actions for 3-12 months  
-- "longTerm": Markdown-formatted list of 3-4 systemic actions for 1-3 years
+- "shortTerm": Markdown-formatted list of 3-4 urgent actions for 0-3 months. Focus on quick wins: fixing stock-outs, scaling IPTp DOT, accelerating vaccine in Kebbi/Bayelsa, improving DHIS2 reporting.
+- "mediumTerm": Markdown-formatted list of 3-4 strategic actions for 3-12 months. Focus on: SNT-aligned IVM deployment, SMC expansion to eligible LGAs, MFT pilot, NMDR integration, BHCPF/NHIA linkage.
+- "longTerm": Markdown-formatted list of 3-4 systemic actions for 1-3 years. Focus on: domestic resource mobilization to 80%, SWAp integration, active case detection in Low-B states, pre-elimination protocols.
 
-Focus on:
-- Declining indicators that need immediate attention
-- Data-driven specifics (reference actual numbers)
-- Actionable steps, not vague advice
-- Nigeria-specific context (states, zones, health system)
-
-Each action should start with a bold verb and include a measurable target where possible.`;
+Each action MUST:
+- Start with a bold verb and reference specific NMSP objective numbers
+- Reference specific states, transmission bands, or intervention types
+- Include a measurable target where possible
+- Be grounded in Nigeria-specific context (states, zones, health system, SNT bands)`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
