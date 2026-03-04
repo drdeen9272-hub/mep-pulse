@@ -109,7 +109,7 @@ export default function WMR2025Summary() {
           </div>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-          Nigeria remains the single highest-burden country globally, accounting for roughly a quarter of all malaria cases and nearly a third of all malaria deaths worldwide. Targeted interventions including expanded SMC, ITN distribution, and vaccine rollout are critical to reversing this trend.
+          Nigeria remains the single highest-burden country globally, accounting for roughly a quarter of all malaria cases and nearly a third of all malaria deaths worldwide. In December 2024, Nigeria began routine malaria vaccination in Kebbi and Bayelsa states — a historic milestone for the country with the world's heaviest malaria burden. Continued expansion of SMC (28.9 million children reached in 2023, the largest programme globally), ITN distribution, and vaccine rollout is critical to reversing this trend.
         </p>
       </motion.div>
 
