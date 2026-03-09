@@ -558,6 +558,9 @@ export default function NetworkExchange() {
         </div>
       </div>
 
+      {/* Live Stats Hero — the headline real-time counters */}
+      <LiveStatsHero totalToday={totalToday} txCount={txCount} />
+
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-8">
         {networkStats.map((s) => (
