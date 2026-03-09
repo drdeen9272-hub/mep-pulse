@@ -125,6 +125,60 @@ const dailyVolume = [
   { day: "Thu", volume: 51200 }, { day: "Fri", volume: 47600 }, { day: "Sat", volume: 28400 }, { day: "Sun", volume: 22100 },
 ];
 
+/* ── Sound & Haptic Utilities ── */
+const audioCtxRef = { current: null as AudioContext | null };
+
+function playMilestoneSound(type: "minor" | "major" = "minor") {
+  try {
+    if (!audioCtxRef.current) audioCtxRef.current = new AudioContext();
+    const ctx = audioCtxRef.current;
+    const now = ctx.currentTime;
+
+    if (type === "major") {
+      // Triumphant two-tone chime
+      [880, 1320].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, now + i * 0.12);
+        gain.gain.linearRampToValueAtTime(0.15, now + i * 0.12 + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.5);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now + i * 0.12);
+        osc.stop(now + i * 0.12 + 0.5);
+      });
+    } else {
+      // Subtle tick
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 660;
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.15);
+    }
+  } catch { /* audio not available */ }
+}
+
+function triggerHaptic(type: "minor" | "major" = "minor") {
+  try {
+    if ("vibrate" in navigator) {
+      navigator.vibrate(type === "major" ? [50, 30, 80] : [20]);
+    }
+  } catch { /* haptic not available */ }
+}
+
+function checkMilestone(prev: number, next: number): "major" | "minor" | null {
+  // Major milestone: every 10,000
+  if (Math.floor(prev / 10000) !== Math.floor(next / 10000)) return "major";
+  // Minor milestone: every 1,000
+  if (Math.floor(prev / 1000) !== Math.floor(next / 1000)) return "minor";
+  return null;
+}
+
 /* ── Animated Rolling Counter ── */
 function RollingDigit({ digit, delay = 0 }: { digit: string; delay?: number }) {
   const isNum = /\d/.test(digit);
@@ -158,11 +212,22 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
 }) {
   const [displayValue, setDisplayValue] = useState(value);
   const [flash, setFlash] = useState(false);
+  const [milestone, setMilestone] = useState<"major" | "minor" | null>(null);
   const prevValue = useRef(value);
 
   useEffect(() => {
     if (value !== prevValue.current) {
       setFlash(true);
+
+      // Check for milestone
+      const hit = checkMilestone(prevValue.current, value);
+      if (hit) {
+        setMilestone(hit);
+        playMilestoneSound(hit);
+        triggerHaptic(hit);
+        setTimeout(() => setMilestone(null), hit === "major" ? 2000 : 1000);
+      }
+
       // Animate from previous to new value
       const start = prevValue.current;
       const end = value;
@@ -187,10 +252,16 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
     <motion.div
       className="relative flex flex-col items-center rounded-2xl border p-5 overflow-hidden"
       style={{
-        borderColor: flash ? glowColor : "hsl(var(--border))",
-        boxShadow: flash ? `0 0 30px ${glowColor}40, 0 0 60px ${glowColor}15` : "none",
+        borderColor: milestone ? glowColor : flash ? glowColor : "hsl(var(--border))",
+        boxShadow: milestone === "major"
+          ? `0 0 40px ${glowColor}60, 0 0 80px ${glowColor}25, inset 0 0 30px ${glowColor}10`
+          : milestone === "minor"
+          ? `0 0 35px ${glowColor}50, 0 0 60px ${glowColor}20`
+          : flash ? `0 0 30px ${glowColor}40, 0 0 60px ${glowColor}15` : "none",
         transition: "border-color 0.3s, box-shadow 0.3s",
       }}
+      animate={milestone === "major" ? { scale: [1, 1.03, 1] } : {}}
+      transition={{ duration: 0.4 }}
     >
       {/* Background pulse */}
       <AnimatePresence>
@@ -224,6 +295,22 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
         animate={{ top: ["0%", "100%"] }}
         transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
       />
+
+      {/* Milestone badge */}
+      <AnimatePresence>
+        {milestone && (
+          <motion.div
+            className="absolute top-2 right-2 z-20 rounded-full px-2.5 py-0.5 font-mono text-[9px] font-bold text-white"
+            style={{ background: glowColor }}
+            initial={{ opacity: 0, scale: 0.5, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: -10 }}
+            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          >
+            {milestone === "major" ? "🎯 10K MILESTONE!" : "✨ 1K MILESTONE"}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
