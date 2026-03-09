@@ -263,7 +263,6 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
       animate={milestone === "major" ? { scale: [1, 1.03, 1] } : {}}
       transition={{ duration: 0.4 }}
     >
-    >
       {/* Background pulse */}
       <AnimatePresence>
         {flash && (
