@@ -25,6 +25,7 @@ import Assumptions from "./pages/dashboard/Assumptions";
 import DataComparison from "./pages/dashboard/DataComparison";
 import CountryComparison from "./pages/dashboard/CountryComparison";
 import NMSPTracker from "./pages/dashboard/NMSPTracker";
+import NetworkExchange from "./pages/dashboard/NetworkExchange";
 import StateDetail from "./pages/dashboard/StateDetail";
 
 
@@ -78,6 +79,7 @@ const App = () => (
             <Route path="/dashboard/assumptions" element={<Assumptions />} />
             <Route path="/dashboard/data-comparison" element={<DataComparison />} />
             <Route path="/dashboard/nmsp-tracker" element={<NMSPTracker />} />
+            <Route path="/dashboard/network" element={<NetworkExchange />} />
             <Route path="/dashboard/state/:stateCode" element={<StateDetail />} />
             {/* Surveillance */}
             <Route path="/surveillance/case-based" element={<CaseBased />} />

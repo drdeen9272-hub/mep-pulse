@@ -24,6 +24,7 @@ const navItems = [
       { label: "Assumptions & Methodology", to: "/dashboard/assumptions" },
       { label: "Data Triangulation (MIS×WMR×SMIS)", to: "/dashboard/data-comparison" },
       { label: "📋 NMSP 2026–2030 Tracker", to: "/dashboard/nmsp-tracker" },
+      { label: "🔗 AISHA Network Exchange", to: "/dashboard/network" },
     ],
   },
   {
