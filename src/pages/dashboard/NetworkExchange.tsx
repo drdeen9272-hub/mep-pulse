@@ -208,7 +208,7 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
 
       <div className="relative z-10 flex flex-col items-center">
         <Icon className="h-6 w-6 mb-2" style={{ color }} />
-        <div className="font-mono text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl" style={{ color }}>
+        <div className="font-mono text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl lg:text-[2.75rem]" style={{ color, lineHeight: "1.15" }}>
           {formatted.split("").map((char, i) => (
             <RollingDigit key={`${i}-${char}`} digit={char} delay={i * 0.03} />
           ))}
