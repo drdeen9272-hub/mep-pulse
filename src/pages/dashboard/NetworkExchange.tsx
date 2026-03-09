@@ -252,10 +252,17 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
     <motion.div
       className="relative flex flex-col items-center rounded-2xl border p-5 overflow-hidden"
       style={{
-        borderColor: flash ? glowColor : "hsl(var(--border))",
-        boxShadow: flash ? `0 0 30px ${glowColor}40, 0 0 60px ${glowColor}15` : "none",
+        borderColor: milestone ? glowColor : flash ? glowColor : "hsl(var(--border))",
+        boxShadow: milestone === "major"
+          ? `0 0 40px ${glowColor}60, 0 0 80px ${glowColor}25, inset 0 0 30px ${glowColor}10`
+          : milestone === "minor"
+          ? `0 0 35px ${glowColor}50, 0 0 60px ${glowColor}20`
+          : flash ? `0 0 30px ${glowColor}40, 0 0 60px ${glowColor}15` : "none",
         transition: "border-color 0.3s, box-shadow 0.3s",
       }}
+      animate={milestone === "major" ? { scale: [1, 1.03, 1] } : {}}
+      transition={{ duration: 0.4 }}
+    >
     >
       {/* Background pulse */}
       <AnimatePresence>
