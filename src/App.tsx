@@ -25,6 +25,7 @@ import Assumptions from "./pages/dashboard/Assumptions";
 import DataComparison from "./pages/dashboard/DataComparison";
 import CountryComparison from "./pages/dashboard/CountryComparison";
 import NMSPTracker from "./pages/dashboard/NMSPTracker";
+import NetworkExchange from "./pages/dashboard/NetworkExchange";
 import StateDetail from "./pages/dashboard/StateDetail";
 
 
