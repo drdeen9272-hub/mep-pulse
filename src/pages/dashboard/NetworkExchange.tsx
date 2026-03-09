@@ -218,6 +218,16 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
   useEffect(() => {
     if (value !== prevValue.current) {
       setFlash(true);
+
+      // Check for milestone
+      const hit = checkMilestone(prevValue.current, value);
+      if (hit) {
+        setMilestone(hit);
+        playMilestoneSound(hit);
+        triggerHaptic(hit);
+        setTimeout(() => setMilestone(null), hit === "major" ? 2000 : 1000);
+      }
+
       // Animate from previous to new value
       const start = prevValue.current;
       const end = value;
