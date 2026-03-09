@@ -128,18 +128,20 @@ const dailyVolume = [
 /* ── Animated Rolling Counter ── */
 function RollingDigit({ digit, delay = 0 }: { digit: string; delay?: number }) {
   const isNum = /\d/.test(digit);
-  if (!isNum) return <span className="inline-block">{digit}</span>;
+  if (!isNum) return <span className="inline-block align-top">{digit}</span>;
 
+  const num = Number(digit);
   return (
-    <span className="relative inline-block h-[1em] w-[0.65em] overflow-hidden">
+    <span className="relative inline-block overflow-hidden align-top" style={{ height: "1.15em", width: "0.62em" }}>
       <motion.span
-        className="absolute inset-0 flex flex-col items-center"
-        initial={{ y: "-100%" }}
-        animate={{ y: `${-Number(digit) * 10}%` }}
-        transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute left-0 right-0 flex flex-col items-center"
+        style={{ top: 0 }}
+        initial={{ transform: "translateY(0%)" }}
+        animate={{ transform: `translateY(${-num * 1.15}em)` }}
+        transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
       >
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-          <span key={n} className="flex h-[1em] items-center justify-center shrink-0">{n}</span>
+          <span key={n} className="flex items-center justify-center shrink-0" style={{ height: "1.15em" }}>{n}</span>
         ))}
       </motion.span>
     </span>
