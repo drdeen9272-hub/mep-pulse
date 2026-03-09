@@ -295,6 +295,22 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
         animate={{ top: ["0%", "100%"] }}
         transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
       />
+
+      {/* Milestone badge */}
+      <AnimatePresence>
+        {milestone && (
+          <motion.div
+            className="absolute top-2 right-2 z-20 rounded-full px-2.5 py-0.5 font-mono text-[9px] font-bold text-white"
+            style={{ background: glowColor }}
+            initial={{ opacity: 0, scale: 0.5, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: -10 }}
+            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          >
+            {milestone === "major" ? "🎯 10K MILESTONE!" : "✨ 1K MILESTONE"}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
