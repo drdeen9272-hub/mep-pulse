@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Activity, Globe, Shield, Zap, ArrowUpDown, Server,
-  CheckCircle2, AlertTriangle, Radio, Network, Building2, Users
+  CheckCircle2, AlertTriangle, Radio, Network, Building2, Users,
+  HeartPulse, TestTube, Pill, TrendingUp
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line, AreaChart, Area } from "recharts";
 
@@ -123,6 +124,238 @@ const dailyVolume = [
   { day: "Mon", volume: 42800 }, { day: "Tue", volume: 45200 }, { day: "Wed", volume: 48900 },
   { day: "Thu", volume: 51200 }, { day: "Fri", volume: 47600 }, { day: "Sat", volume: 28400 }, { day: "Sun", volume: 22100 },
 ];
+
+/* ── Animated Rolling Counter ── */
+function RollingDigit({ digit, delay = 0 }: { digit: string; delay?: number }) {
+  const isNum = /\d/.test(digit);
+  if (!isNum) return <span className="inline-block">{digit}</span>;
+
+  return (
+    <span className="relative inline-block h-[1em] w-[0.65em] overflow-hidden">
+      <motion.span
+        className="absolute inset-0 flex flex-col items-center"
+        initial={{ y: "-100%" }}
+        animate={{ y: `${-Number(digit) * 10}%` }}
+        transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+          <span key={n} className="flex h-[1em] items-center justify-center shrink-0">{n}</span>
+        ))}
+      </motion.span>
+    </span>
+  );
+}
+
+function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: Icon }: {
+  value: number;
+  label: string;
+  sublabel: string;
+  color: string;
+  glowColor: string;
+  icon: React.ElementType;
+}) {
+  const [displayValue, setDisplayValue] = useState(value);
+  const [flash, setFlash] = useState(false);
+  const prevValue = useRef(value);
+
+  useEffect(() => {
+    if (value !== prevValue.current) {
+      setFlash(true);
+      // Animate from previous to new value
+      const start = prevValue.current;
+      const end = value;
+      const duration = 600;
+      const startTime = Date.now();
+      const tick = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplayValue(Math.round(start + (end - start) * eased));
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      prevValue.current = value;
+      setTimeout(() => setFlash(false), 400);
+    }
+  }, [value]);
+
+  const formatted = displayValue.toLocaleString();
+
+  return (
+    <motion.div
+      className="relative flex flex-col items-center rounded-2xl border p-5 overflow-hidden"
+      style={{
+        borderColor: flash ? glowColor : "hsl(var(--border))",
+        boxShadow: flash ? `0 0 30px ${glowColor}40, 0 0 60px ${glowColor}15` : "none",
+        transition: "border-color 0.3s, box-shadow 0.3s",
+      }}
+    >
+      {/* Background pulse */}
+      <AnimatePresence>
+        {flash && (
+          <motion.div
+            className="absolute inset-0 rounded-2xl"
+            style={{ background: `radial-gradient(circle at center, ${glowColor}12, transparent 70%)` }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1.2 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className="relative z-10 flex flex-col items-center">
+        <Icon className="h-6 w-6 mb-2" style={{ color }} />
+        <div className="font-mono text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl" style={{ color }}>
+          {formatted.split("").map((char, i) => (
+            <RollingDigit key={`${i}-${char}`} digit={char} delay={i * 0.03} />
+          ))}
+        </div>
+        <p className="mt-2 text-sm font-semibold text-foreground">{label}</p>
+        <p className="text-[10px] text-muted-foreground">{sublabel}</p>
+      </div>
+
+      {/* Subtle scanning line */}
+      <motion.div
+        className="absolute left-0 right-0 h-px"
+        style={{ background: `linear-gradient(90deg, transparent, ${glowColor}40, transparent)` }}
+        animate={{ top: ["0%", "100%"] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+      />
+    </motion.div>
+  );
+}
+
+/* ── Live Stats Hero ── */
+function LiveStatsHero({ totalToday, txCount }: { totalToday: number; txCount: number }) {
+  const [casesToday, setCasesToday] = useState(12_840);
+  const [drugsVerified, setDrugsVerified] = useState(9_720);
+  const [rdtsProcessed, setRdtsProcessed] = useState(18_930);
+  const [livesProtected, setLivesProtected] = useState(2_847_291);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCasesToday((v) => v + Math.floor(Math.random() * 5) + 1);
+      setDrugsVerified((v) => v + Math.floor(Math.random() * 4) + 1);
+      setRdtsProcessed((v) => v + Math.floor(Math.random() * 7) + 2);
+      setLivesProtected((v) => v + Math.floor(Math.random() * 3) + 1);
+    }, 1800);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative rounded-2xl border bg-card overflow-hidden">
+      {/* Animated grid background */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `
+          linear-gradient(hsl(var(--secondary)) 1px, transparent 1px),
+          linear-gradient(90deg, hsl(var(--secondary)) 1px, transparent 1px)
+        `,
+        backgroundSize: "30px 30px",
+      }} />
+
+      {/* Scanning bar */}
+      <motion.div
+        className="absolute left-0 right-0 h-[2px] z-10"
+        style={{ background: "linear-gradient(90deg, transparent, hsl(var(--secondary) / 0.4), transparent)" }}
+        animate={{ top: ["-2px", "calc(100% + 2px)"] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+      />
+
+      <div className="relative z-10 p-6">
+        {/* Title bar */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="h-3 w-3 rounded-full bg-secondary" />
+              <motion.div
+                className="absolute inset-0 h-3 w-3 rounded-full bg-secondary"
+                animate={{ scale: [1, 2], opacity: [0.6, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+            </div>
+            <span className="font-mono text-xs font-semibold text-secondary uppercase tracking-widest">
+              Live Malaria Intelligence Feed
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="border-secondary/50 text-secondary font-mono text-[9px] gap-1.5">
+              <Radio className="h-2 w-2 animate-pulse" />
+              {new Date().toLocaleTimeString("en-NG")}
+            </Badge>
+            <Badge variant="outline" className="font-mono text-[9px] text-muted-foreground">
+              TX #{String(txCount).padStart(8, "0")}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Counter Grid */}
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <AnimatedLiveCounter
+            value={casesToday}
+            label="Cases Reported"
+            sublabel="P. falciparum confirmed today"
+            color="hsl(var(--destructive))"
+            glowColor="hsl(var(--destructive))"
+            icon={Activity}
+          />
+          <AnimatedLiveCounter
+            value={drugsVerified}
+            label="Drugs Verified"
+            sublabel="Antimalarials authenticated"
+            color="hsl(var(--secondary))"
+            glowColor="hsl(var(--secondary))"
+            icon={Shield}
+          />
+          <AnimatedLiveCounter
+            value={rdtsProcessed}
+            label="RDTs Processed"
+            sublabel="AI-read diagnostic results"
+            color="hsl(var(--accent))"
+            glowColor="hsl(var(--accent))"
+            icon={Zap}
+          />
+          <AnimatedLiveCounter
+            value={livesProtected}
+            label="Lives Protected"
+            sublabel="Cumulative since launch"
+            color="hsl(var(--primary))"
+            glowColor="hsl(var(--primary))"
+            icon={Users}
+          />
+        </div>
+
+        {/* Throughput bar */}
+        <div className="mt-5 flex items-center gap-3 rounded-lg bg-muted/40 px-4 py-2.5">
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Throughput</span>
+          <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              style={{ background: "linear-gradient(90deg, hsl(var(--secondary)), hsl(var(--accent)))" }}
+              animate={{ width: ["60%", "78%", "65%", "82%", "70%"] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+          <span className="font-mono text-xs font-bold text-secondary">{totalToday.toLocaleString()}/day</span>
+          <div className="hidden sm:flex items-center gap-4 ml-4 border-l border-border pl-4">
+            {[
+              { label: "Cases", color: "bg-destructive", rate: "5.8/s" },
+              { label: "Verify", color: "bg-secondary", rate: "4.4/s" },
+              { label: "RDT", color: "bg-accent", rate: "8.6/s" },
+              { label: "Alerts", color: "bg-primary", rate: "0.6/s" },
+            ].map((ch) => (
+              <div key={ch.label} className="flex items-center gap-1.5">
+                <span className={`h-1.5 w-1.5 rounded-full ${ch.color}`} />
+                <span className="text-[9px] text-muted-foreground">{ch.label}</span>
+                <span className="font-mono text-[9px] font-semibold text-foreground">{ch.rate}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* ── Components ── */
 function NetworkVisualization() {
@@ -324,6 +557,9 @@ export default function NetworkExchange() {
           <p>Network ID: NG-MALARIA-2025</p>
         </div>
       </div>
+
+      {/* Live Stats Hero — the headline real-time counters */}
+      <LiveStatsHero totalToday={totalToday} txCount={txCount} />
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-8">
