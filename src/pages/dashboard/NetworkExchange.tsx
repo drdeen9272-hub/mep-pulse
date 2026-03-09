@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Activity, Globe, Shield, Zap, ArrowUpDown, Server,
-  CheckCircle2, AlertTriangle, Radio, Network, Building2, Users
+  CheckCircle2, AlertTriangle, Radio, Network, Building2, Users,
+  Heartbeat, TestTube, Pill, TrendingUp
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line, AreaChart, Area } from "recharts";
 
