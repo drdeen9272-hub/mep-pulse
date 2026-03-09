@@ -125,6 +125,60 @@ const dailyVolume = [
   { day: "Thu", volume: 51200 }, { day: "Fri", volume: 47600 }, { day: "Sat", volume: 28400 }, { day: "Sun", volume: 22100 },
 ];
 
+/* ── Sound & Haptic Utilities ── */
+const audioCtxRef = { current: null as AudioContext | null };
+
+function playMilestoneSound(type: "minor" | "major" = "minor") {
+  try {
+    if (!audioCtxRef.current) audioCtxRef.current = new AudioContext();
+    const ctx = audioCtxRef.current;
+    const now = ctx.currentTime;
+
+    if (type === "major") {
+      // Triumphant two-tone chime
+      [880, 1320].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, now + i * 0.12);
+        gain.gain.linearRampToValueAtTime(0.15, now + i * 0.12 + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.5);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now + i * 0.12);
+        osc.stop(now + i * 0.12 + 0.5);
+      });
+    } else {
+      // Subtle tick
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 660;
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.15);
+    }
+  } catch { /* audio not available */ }
+}
+
+function triggerHaptic(type: "minor" | "major" = "minor") {
+  try {
+    if ("vibrate" in navigator) {
+      navigator.vibrate(type === "major" ? [50, 30, 80] : [20]);
+    }
+  } catch { /* haptic not available */ }
+}
+
+function checkMilestone(prev: number, next: number): "major" | "minor" | null {
+  // Major milestone: every 10,000
+  if (Math.floor(prev / 10000) !== Math.floor(next / 10000)) return "major";
+  // Minor milestone: every 1,000
+  if (Math.floor(prev / 1000) !== Math.floor(next / 1000)) return "minor";
+  return null;
+}
+
 /* ── Animated Rolling Counter ── */
 function RollingDigit({ digit, delay = 0 }: { digit: string; delay?: number }) {
   const isNum = /\d/.test(digit);
@@ -158,6 +212,7 @@ function AnimatedLiveCounter({ value, label, sublabel, color, glowColor, icon: I
 }) {
   const [displayValue, setDisplayValue] = useState(value);
   const [flash, setFlash] = useState(false);
+  const [milestone, setMilestone] = useState<"major" | "minor" | null>(null);
   const prevValue = useRef(value);
 
   useEffect(() => {
