@@ -590,6 +590,286 @@ function TransactionTicker({ transactions }: { transactions: Transaction[] }) {
   );
 }
 
+/* ── Funder-Purchaser Linkage Data ── */
+const funderData = [
+  { id: "gf", name: "Global Fund", amount: "$1.2B", type: "Multilateral", linkedPurchasers: ["nmep", "smp", "nphcda"],
+    allocations: [
+      { purchaser: "NMEP", amount: "$620M", purpose: "ACT procurement & case management", pct: 52 },
+      { purchaser: "State Malaria Programs", amount: "$380M", purpose: "Subnational operations & IRS", pct: 32 },
+      { purchaser: "NPHCDA", amount: "$200M", purpose: "PHC commodity supply", pct: 16 },
+    ] },
+  { id: "pmi", name: "PMI/USAID", amount: "$820M", type: "Bilateral", linkedPurchasers: ["nmep", "smp", "community"],
+    allocations: [
+      { purchaser: "NMEP", amount: "$350M", purpose: "ITN distribution & surveillance", pct: 43 },
+      { purchaser: "State Malaria Programs", amount: "$290M", purpose: "SMC campaigns & training", pct: 35 },
+      { purchaser: "Community Health", amount: "$180M", purpose: "iCCM & CHW deployment", pct: 22 },
+    ] },
+  { id: "gates", name: "Gates Foundation", amount: "$340M", type: "Philanthropic", linkedPurchasers: ["nmep", "nphcda"],
+    allocations: [
+      { purchaser: "NMEP", amount: "$210M", purpose: "Innovation & digital health (AISHA)", pct: 62 },
+      { purchaser: "NPHCDA", amount: "$130M", purpose: "Diagnostic capacity & mRDT AI", pct: 38 },
+    ] },
+  { id: "fgn", name: "FGN Domestic", amount: "$158M", type: "Government", linkedPurchasers: ["nmep", "smp", "nphcda", "ppmv"],
+    allocations: [
+      { purchaser: "NMEP", amount: "$58M", purpose: "National coordination & M&E", pct: 37 },
+      { purchaser: "State Malaria Programs", amount: "$45M", purpose: "State counterpart funding", pct: 28 },
+      { purchaser: "NPHCDA", amount: "$30M", purpose: "Routine immunization integration", pct: 19 },
+      { purchaser: "Private Sector (PPMVs)", amount: "$25M", purpose: "PPMV accreditation & QA", pct: 16 },
+    ] },
+  { id: "wb", name: "World Bank / IDA", amount: "$280M", type: "Development", linkedPurchasers: ["smp", "nphcda", "community"],
+    allocations: [
+      { purchaser: "State Malaria Programs", amount: "$140M", purpose: "Results-based financing", pct: 50 },
+      { purchaser: "NPHCDA", amount: "$80M", purpose: "Health systems strengthening", pct: 29 },
+      { purchaser: "Community Health", amount: "$60M", purpose: "Community MNCH integration", pct: 21 },
+    ] },
+];
+
+const purchaserData = [
+  { id: "nmep", name: "NMEP", role: "National purchasing & allocation", coverage: "36 States + FCT" },
+  { id: "smp", name: "State Malaria Programs", role: "Subnational procurement", coverage: "774 LGAs" },
+  { id: "nphcda", name: "NPHCDA", role: "Primary care commodities", coverage: "30,000+ PHCs" },
+  { id: "ppmv", name: "Private Sector (PPMVs)", role: "Last-mile drug distribution", coverage: "8,247 outlets" },
+  { id: "community", name: "Community Health", role: "iCCM & SMC delivery", coverage: "54M children" },
+];
+
+function StrategicOversightLayer() {
+  const [activeFunder, setActiveFunder] = useState<string | null>(null);
+  const selectedFunder = funderData.find((f) => f.id === activeFunder);
+
+  return (
+    <Card className="border-2 border-dashed border-accent/40 bg-gradient-to-br from-card to-accent/5 overflow-hidden relative">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2 text-base flex-wrap">
+          <Landmark className="h-5 w-5 text-accent" />
+          Strategic Oversight Layer
+          <Badge variant="outline" className="ml-2 text-[9px] border-accent/50 text-accent font-mono">GOVERNANCE</Badge>
+          {activeFunder && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="ml-auto text-[10px] text-muted-foreground hover:text-foreground underline"
+              onClick={() => setActiveFunder(null)}
+            >
+              Clear selection
+            </motion.button>
+          )}
+        </CardTitle>
+        <p className="text-xs text-muted-foreground">
+          Click any funder to reveal its linked purchasers and funding allocation breakdown.
+        </p>
+      </CardHeader>
+      <CardContent className="relative">
+        <div className="relative">
+          <div className="grid grid-cols-1 md:grid-cols-7 gap-3 items-start">
+            {/* Strategic Funders Column */}
+            <div className="md:col-span-2 space-y-2">
+              <div className="text-[10px] font-mono uppercase tracking-widest text-accent font-semibold mb-2 text-center">Strategic Funders</div>
+              {funderData.map((funder) => {
+                const isActive = activeFunder === funder.id;
+                const isDimmed = activeFunder !== null && !isActive;
+                return (
+                  <motion.div
+                    key={funder.id}
+                    className="flex items-center justify-between rounded-lg border px-3 py-2 cursor-pointer select-none"
+                    style={{
+                      borderColor: isActive ? "hsl(var(--accent))" : "hsl(var(--accent) / 0.3)",
+                      background: isActive ? "hsl(var(--accent) / 0.15)" : "hsl(var(--accent) / 0.05)",
+                      opacity: isDimmed ? 0.4 : 1,
+                    }}
+                    whileHover={{ scale: 1.02, borderColor: "hsl(var(--accent))" }}
+                    whileTap={{ scale: 0.98 }}
+                    animate={isActive ? { boxShadow: "0 0 20px hsl(var(--accent) / 0.25)" } : { boxShadow: "none" }}
+                    transition={{ duration: 0.2 }}
+                    onClick={() => setActiveFunder(isActive ? null : funder.id)}
+                  >
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">{funder.name}</p>
+                      <p className="text-[9px] text-muted-foreground">{funder.type}</p>
+                    </div>
+                    <span className="font-mono text-xs font-bold text-accent">{funder.amount}</span>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Central Oversight Hub */}
+            <div className="md:col-span-3 flex flex-col items-center gap-3">
+              <svg className="hidden md:block w-full h-6" viewBox="0 0 300 24">
+                <defs>
+                  <marker id="arr-ro" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="hsl(var(--accent))" /></marker>
+                  <marker id="arr-r2o" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="hsl(var(--secondary))" /></marker>
+                </defs>
+                <line x1="10" y1="8" x2="140" y2="8" stroke="hsl(var(--accent))" strokeWidth="1.5" strokeDasharray="4 2" markerEnd="url(#arr-ro)" opacity="0.6" />
+                <text x="75" y="7" textAnchor="middle" fill="hsl(var(--accent))" fontSize="5" opacity="0.7">Funding Flows</text>
+                <line x1="160" y1="8" x2="290" y2="8" stroke="hsl(var(--secondary))" strokeWidth="1.5" strokeDasharray="4 2" markerEnd="url(#arr-r2o)" opacity="0.6" />
+                <text x="225" y="7" textAnchor="middle" fill="hsl(var(--secondary))" fontSize="5" opacity="0.7">Purchase Orders</text>
+              </svg>
+
+              <motion.div
+                className="relative w-full max-w-sm rounded-2xl border-2 border-accent bg-card p-4 shadow-lg"
+                animate={{ boxShadow: ["0 0 20px hsl(var(--accent) / 0.1)", "0 0 40px hsl(var(--accent) / 0.2)", "0 0 20px hsl(var(--accent) / 0.1)"] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <div className="text-center mb-3">
+                  <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-accent/10 mb-2">
+                    <Landmark className="h-5 w-5 text-accent" />
+                  </div>
+                  <h4 className="font-heading text-sm font-bold text-foreground">Oversight & Accountability Hub</h4>
+                  <p className="text-[9px] text-muted-foreground">NMEP + NAFDAC + FMoH Joint Governance</p>
+                </div>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {[
+                    { label: "Value for Money Audit", icon: "📊" },
+                    { label: "Outcome Verification", icon: "✅" },
+                    { label: "Disbursement Tracking", icon: "💰" },
+                    { label: "Performance Contracts", icon: "📋" },
+                    { label: "Results Reporting", icon: "📈" },
+                    { label: "Fiduciary Assurance", icon: "🔒" },
+                  ].map((fn) => (
+                    <div key={fn.label} className="flex items-center gap-1.5 rounded-md bg-muted/50 px-2 py-1.5">
+                      <span className="text-[10px]">{fn.icon}</span>
+                      <span className="text-[9px] font-medium text-foreground">{fn.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <motion.div className="absolute -inset-1 rounded-2xl border border-accent/30" animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.02, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+              </motion.div>
+
+              <svg className="hidden md:block w-full h-6" viewBox="0 0 300 24">
+                <defs>
+                  <marker id="arr-lo" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="hsl(var(--accent))" /></marker>
+                  <marker id="arr-l2o" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="hsl(var(--secondary))" /></marker>
+                </defs>
+                <line x1="140" y1="15" x2="10" y2="15" stroke="hsl(var(--accent))" strokeWidth="1" strokeDasharray="3 2" markerEnd="url(#arr-lo)" opacity="0.5" />
+                <text x="75" y="13" textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize="4.5" opacity="0.7">Accountability Reports</text>
+                <line x1="290" y1="15" x2="160" y2="15" stroke="hsl(var(--secondary))" strokeWidth="1" strokeDasharray="3 2" markerEnd="url(#arr-l2o)" opacity="0.5" />
+                <text x="225" y="13" textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize="4.5" opacity="0.7">Service Delivery Data</text>
+              </svg>
+            </div>
+
+            {/* Strategic Purchasers Column */}
+            <div className="md:col-span-2 space-y-2">
+              <div className="text-[10px] font-mono uppercase tracking-widest text-secondary font-semibold mb-2 text-center">Strategic Purchasers</div>
+              {purchaserData.map((purchaser) => {
+                const isLinked = selectedFunder?.linkedPurchasers.includes(purchaser.id);
+                const isDimmed = activeFunder !== null && !isLinked;
+                const allocation = selectedFunder?.allocations.find((a) => a.purchaser === purchaser.name);
+                return (
+                  <motion.div
+                    key={purchaser.id}
+                    className="rounded-lg border px-3 py-2"
+                    style={{
+                      borderColor: isLinked ? "hsl(var(--secondary))" : "hsl(var(--secondary) / 0.3)",
+                      background: isLinked ? "hsl(var(--secondary) / 0.1)" : "hsl(var(--secondary) / 0.05)",
+                      opacity: isDimmed ? 0.3 : 1,
+                    }}
+                    animate={isLinked ? { boxShadow: "0 0 16px hsl(var(--secondary) / 0.2)" } : { boxShadow: "none" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <p className="text-xs font-semibold text-foreground">{purchaser.name}</p>
+                    <p className="text-[9px] text-muted-foreground">{purchaser.role}</p>
+                    <p className="text-[9px] font-mono text-secondary">{purchaser.coverage}</p>
+                    <AnimatePresence>
+                      {isLinked && allocation && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-2 pt-2 border-t border-secondary/20">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-bold text-secondary font-mono">{allocation.amount}</span>
+                              <span className="text-[9px] text-muted-foreground">{allocation.pct}% of total</span>
+                            </div>
+                            <p className="text-[8px] text-muted-foreground mt-0.5">{allocation.purpose}</p>
+                            <div className="mt-1 h-1 w-full rounded-full bg-muted overflow-hidden">
+                              <motion.div className="h-full rounded-full bg-secondary" initial={{ width: 0 }} animate={{ width: `${allocation.pct}%` }} transition={{ duration: 0.6, delay: 0.1 }} />
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Allocation Breakdown Panel */}
+          <AnimatePresence>
+            {selectedFunder && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-4 rounded-xl border border-accent/40 bg-accent/5 p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4 text-accent" />
+                      <h4 className="text-sm font-bold text-foreground">{selectedFunder.name} — Allocation Breakdown</h4>
+                    </div>
+                    <span className="font-mono text-sm font-bold text-accent">{selectedFunder.amount}</span>
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {selectedFunder.allocations.map((alloc, i) => (
+                      <motion.div
+                        key={alloc.purchaser}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.08 }}
+                        className="rounded-lg border border-border bg-card p-3"
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-[11px] font-semibold text-foreground">{alloc.purchaser}</span>
+                          <span className="font-mono text-xs font-bold text-accent">{alloc.amount}</span>
+                        </div>
+                        <p className="text-[9px] text-muted-foreground mb-2">{alloc.purpose}</p>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                            <motion.div
+                              className="h-full rounded-full"
+                              style={{ background: "linear-gradient(90deg, hsl(var(--accent)), hsl(var(--secondary)))" }}
+                              initial={{ width: 0 }}
+                              animate={{ width: `${alloc.pct}%` }}
+                              transition={{ duration: 0.8, delay: i * 0.1 }}
+                            />
+                          </div>
+                          <span className="font-mono text-[10px] font-bold text-muted-foreground">{alloc.pct}%</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Key Metrics Strip */}
+          <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {[
+              { label: "Funds Tracked", value: "$2.8B", delta: "of $4.1B total", color: "text-accent" },
+              { label: "Disbursement Efficiency", value: "87.3%", delta: "+4.2% vs 2023", color: "text-secondary" },
+              { label: "Outcome-Linked Payments", value: "62%", delta: "Target: 80% by 2030", color: "text-primary" },
+              { label: "Audit Coverage", value: "94.1%", delta: "36/36 states audited", color: "text-accent" },
+            ].map((metric) => (
+              <div key={metric.label} className="rounded-lg border bg-card/60 p-3 text-center">
+                <p className={`text-xl font-bold font-mono ${metric.color}`}>{metric.value}</p>
+                <p className="text-[10px] font-semibold text-foreground">{metric.label}</p>
+                <p className="text-[9px] text-muted-foreground">{metric.delta}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 /* ── Page ── */
 export default function NetworkExchange() {
   const [transactions, setTransactions] = useState<Transaction[]>(() =>
