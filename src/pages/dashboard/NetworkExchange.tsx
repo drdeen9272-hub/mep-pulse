@@ -864,6 +864,225 @@ function StrategicOversightLayer() {
               </div>
             ))}
           </div>
+
+          {/* ── Provider / Service Delivery Layer ── */}
+          <div className="mt-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">▼ Final Mile — Service Delivery Layer ▼</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            {/* Connecting arrows from purchasers */}
+            <svg className="w-full h-8 mb-2" viewBox="0 0 400 24">
+              <defs>
+                <marker id="arr-sd" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                  <path d="M0,0 L5,2.5 L0,5 Z" fill="hsl(var(--primary))" />
+                </marker>
+              </defs>
+              {[80, 150, 200, 250, 320].map((x, i) => (
+                <g key={i}>
+                  <line x1={x} y1="2" x2={x} y2="18" stroke="hsl(var(--primary))" strokeWidth="1" strokeDasharray="3 2" markerEnd="url(#arr-sd)" opacity="0.5" />
+                </g>
+              ))}
+              <text x="200" y="8" textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize="4.5" opacity="0.6">Commodities, Supervision & Reporting</text>
+            </svg>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Health Facilities */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="rounded-xl border border-primary/30 bg-primary/5 p-4"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-primary/10">
+                    <Building2 className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground">Health Facilities</h4>
+                    <p className="text-[9px] text-muted-foreground">PHCs, General & Teaching Hospitals</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  {[
+                    { label: "Active PHCs", value: "6,842", delta: "+312 YoY" },
+                    { label: "Gen. Hospitals", value: "1,124", delta: "98% reporting" },
+                    { label: "Teaching Hospitals", value: "281", delta: "100% connected" },
+                    { label: "Avg Daily Cases", value: "14.2K", delta: "per facility cluster" },
+                  ].map((m) => (
+                    <div key={m.label} className="rounded-md bg-card/80 border border-border/50 p-2">
+                      <p className="font-mono text-sm font-bold text-primary">{m.value}</p>
+                      <p className="text-[9px] font-medium text-foreground">{m.label}</p>
+                      <p className="text-[8px] text-muted-foreground">{m.delta}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-1.5">
+                  {[
+                    { label: "RDT Testing Coverage", value: 87 },
+                    { label: "ACT Stock Availability", value: 78 },
+                    { label: "DHIS2 Reporting Rate", value: 94 },
+                  ].map((bar) => (
+                    <div key={bar.label}>
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[9px] text-foreground">{bar.label}</span>
+                        <span className="text-[9px] font-mono font-bold text-primary">{bar.value}%</span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                        <motion.div
+                          className="h-full rounded-full bg-primary"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${bar.value}%` }}
+                          transition={{ duration: 0.8, delay: 0.2 }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Community Health Workers */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="rounded-xl border border-secondary/30 bg-secondary/5 p-4"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-secondary/10">
+                    <Stethoscope className="h-5 w-5 text-secondary" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground">Community Health Workers</h4>
+                    <p className="text-[9px] text-muted-foreground">iCCM-trained, ward-level deployment</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  {[
+                    { label: "Active CHWs", value: "52,418", delta: "Across 36 states" },
+                    { label: "Home Visits/Mo", value: "1.8M", delta: "↑22% vs Q3 2024" },
+                    { label: "RDTs Conducted", value: "842K", delta: "Monthly average" },
+                    { label: "Referral Rate", value: "12.3%", delta: "Severe cases" },
+                  ].map((m) => (
+                    <div key={m.label} className="rounded-md bg-card/80 border border-border/50 p-2">
+                      <p className="font-mono text-sm font-bold text-secondary">{m.value}</p>
+                      <p className="text-[9px] font-medium text-foreground">{m.label}</p>
+                      <p className="text-[8px] text-muted-foreground">{m.delta}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-1.5">
+                  {[
+                    { label: "AISHA App Adoption", value: 73 },
+                    { label: "Supervision Compliance", value: 81 },
+                    { label: "Data Completeness", value: 89 },
+                  ].map((bar) => (
+                    <div key={bar.label}>
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[9px] text-foreground">{bar.label}</span>
+                        <span className="text-[9px] font-mono font-bold text-secondary">{bar.value}%</span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                        <motion.div
+                          className="h-full rounded-full bg-secondary"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${bar.value}%` }}
+                          transition={{ duration: 0.8, delay: 0.3 }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* PPMVs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="rounded-xl border border-accent/30 bg-accent/5 p-4"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center justify-center h-9 w-9 rounded-lg bg-accent/10">
+                    <Home className="h-5 w-5 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-foreground">PPMVs</h4>
+                    <p className="text-[9px] text-muted-foreground">Patent Medicine Vendors — last-mile access</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  {[
+                    { label: "Enrolled PPMVs", value: "8,247", delta: "+18.2% YoY" },
+                    { label: "Drugs Verified", value: "4.8M", delta: "Via AISHA scan" },
+                    { label: "Monthly RDTs", value: "326K", delta: "Community testing" },
+                    { label: "Avg Quality Score", value: "78.4", delta: "Out of 100" },
+                  ].map((m) => (
+                    <div key={m.label} className="rounded-md bg-card/80 border border-border/50 p-2">
+                      <p className="font-mono text-sm font-bold text-accent">{m.value}</p>
+                      <p className="text-[9px] font-medium text-foreground">{m.label}</p>
+                      <p className="text-[8px] text-muted-foreground">{m.delta}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-1.5">
+                  {[
+                    { label: "Drug Authentication Rate", value: 92 },
+                    { label: "Training Completion", value: 68 },
+                    { label: "Reporting Compliance", value: 71 },
+                  ].map((bar) => (
+                    <div key={bar.label}>
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-[9px] text-foreground">{bar.label}</span>
+                        <span className="text-[9px] font-mono font-bold text-accent">{bar.value}%</span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                        <motion.div
+                          className="h-full rounded-full bg-accent"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${bar.value}%` }}
+                          transition={{ duration: 0.8, delay: 0.4 }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Population reach summary */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-4 rounded-lg border bg-card/60 p-3"
+            >
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-foreground" />
+                  <span className="text-xs font-semibold text-foreground">Population Reached via Final Mile</span>
+                </div>
+                <div className="flex items-center gap-4 text-center">
+                  {[
+                    { label: "Health Facilities", value: "118M", color: "text-primary" },
+                    { label: "CHW Network", value: "42M", color: "text-secondary" },
+                    { label: "PPMV Network", value: "64M", color: "text-accent" },
+                  ].map((r) => (
+                    <div key={r.label}>
+                      <p className={`font-mono text-base font-bold ${r.color}`}>{r.value}</p>
+                      <p className="text-[9px] text-muted-foreground">{r.label}</p>
+                    </div>
+                  ))}
+                  <div className="border-l pl-4">
+                    <p className="font-mono text-base font-bold text-foreground">224M</p>
+                    <p className="text-[9px] text-muted-foreground font-semibold">Total Coverage</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </CardContent>
     </Card>
