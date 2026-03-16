@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Activity, Globe, Shield, Zap, ArrowUpDown, Server,
   CheckCircle2, AlertTriangle, Radio, Network, Building2, Users,
-  HeartPulse, TestTube, Pill, TrendingUp, Landmark
+  HeartPulse, TestTube, Pill, TrendingUp, Landmark, Stethoscope, MapPin, Home
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line, AreaChart, Area } from "recharts";
 
